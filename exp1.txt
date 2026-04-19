@@ -1,0 +1,189 @@
+🧪 **EXPERIMENT 1 – STEGANOGRAPHY + TCPDUMP**
+
+---
+
+# 🎯 AIM
+
+To hide text inside an image using steganography, recover a corrupted image using a hex editor, and capture network packets using tcpdump.
+
+---
+
+# 🔷 PART 1(a): HIDE TEXT INSIDE IMAGE (STEGO)
+
+## 🔹 Step 1: Create secret text file
+
+```bash
+echo "This is a secret message" > secret.txt
+# Creates a file containing the hidden message
+```
+
+```bash
+cat secret.txt
+# Displays content to verify
+```
+
+---
+
+## 🔹 Step 2: Get a clean image (IMPORTANT)
+
+```bash
+wget https://via.placeholder.com/300.jpg -O image.jpg
+# Downloads a valid JPEG image
+```
+
+```bash
+file image.jpg
+# Confirms file type is JPEG (required for steghide)
+```
+
+---
+
+## 🔹 Step 3: Embed text into image
+
+```bash
+steghide embed -cf image.jpg -ef secret.txt
+# Hides secret.txt inside image.jpg using a password
+```
+
+---
+
+## 🔹 Step 4: Extract hidden text
+
+```bash
+steghide extract -sf image.jpg
+# Extracts hidden data from image (enter same password)
+```
+
+```bash
+cat secret.txt
+# Displays extracted message
+```
+
+---
+
+# 🔷 PART 2: RECOVER CORRUPTED IMAGE (HEX EDITOR)
+
+## 🔹 Step 5: Create corrupted image
+
+```bash
+cp image.jpg corrupt.jpg
+# Creates a copy to simulate corruption
+```
+
+```bash
+ghex corrupt.jpg
+# Opens hex editor (modify first few bytes randomly to corrupt)
+```
+
+---
+
+## 🔹 Step 6: Fix image header
+
+```bash
+ghex corrupt.jpg
+# Open again and fix header manually
+```
+
+👉 Replace first bytes with:
+
+```
+FF D8 FF E0
+# Standard JPEG header to restore image
+```
+
+```bash
+eog corrupt.jpg
+# Opens the repaired image
+```
+
+---
+
+# 🔷 PART 1(b): TCPDUMP (PACKET CAPTURE)
+
+## 🔹 Step 7: List available interfaces
+
+```bash
+sudo tcpdump -D
+# Displays all network interfaces
+```
+
+---
+
+## 🔹 Step 8: Capture packets (basic)
+
+```bash
+sudo tcpdump -i enp0s3
+# Starts capturing packets on interface enp0s3
+```
+
+👉 In another terminal:
+
+```bash
+ping google.com
+# Generates network traffic for capture
+```
+
+---
+
+## 🔹 Step 9: Capture limited packets
+
+```bash
+sudo tcpdump -i enp0s3 -c 10
+# Captures only 10 packets and stops automatically
+```
+
+---
+
+## 🔹 Step 10: Capture specific traffic
+
+```bash
+sudo tcpdump icmp
+# Captures only ICMP packets (ping)
+```
+
+```bash
+sudo tcpdump port 80
+# Captures HTTP traffic
+```
+
+```bash
+sudo tcpdump host 8.8.8.8
+# Captures packets from/to specific IP
+```
+
+---
+
+## 🔹 Step 11: Save packets to file
+
+```bash
+sudo tcpdump -i enp0s3 -w capture.pcap
+# Saves captured packets to file
+```
+
+---
+
+## 🔹 Step 12: Read saved packets
+
+```bash
+tcpdump -r capture.pcap
+# Reads and displays stored packets
+```
+
+---
+
+# 📊 RESULT
+
+* Successfully hid and extracted text from image using steganography
+* Successfully recovered corrupted image using hex editor
+* Successfully captured and analyzed network packets using tcpdump
+
+---
+
+# 🧠 KEY POINTS (FOR EXAM)
+
+* JPEG header = FF D8 FF E0
+* Steganography hides data invisibly
+* tcpdump captures real-time network packets
+* Traffic must be generated (ping/browsing) to capture packets
+
+---
