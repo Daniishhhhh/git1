@@ -1,0 +1,41 @@
+EXPERIMENT 10: Packet Capture using tcpdump + AES Padding
+🎯 Short Description
+Capture and analyze network packets using tcpdump with filters and file operations.
+Demonstrate padding mechanism in AES using OpenSSL.
+🔴 PART A: Packet Capture using tcpdump
+⚙️ Step 1: Open Terminal (Admin)
+⚙️ Step 2: Capture All Packets
+sudo tcpdump -i eth0
+⚙️ Step 3: Capture Limited Packets
+sudo tcpdump -i eth0 -c 10
+⚙️ Step 4: Capture TCP Packets
+sudo tcpdump -i eth0 tcp
+⚙️ Step 5: Capture UDP Packets
+sudo tcpdump -i eth0 udp
+⚙️ Step 6: Capture DNS Traffic
+sudo tcpdump -i eth0 port 53
+⚙️ Step 7: Capture HTTP Traffic
+sudo tcpdump -i eth0 port 80
+⚙️ Step 8: Save Packets to File
+sudo tcpdump -i eth0 -w capture.pcap
+⚙️ Step 9: Read Saved File
+tcpdump -r capture.pcap
+⚙️ Step 10: Verbose Output
+sudo tcpdump -i eth0 -v
+⚙️ Step 11: Incoming & Outgoing
+sudo tcpdump -i eth0 inbound
+sudo tcpdump -i eth0 outbound
+
+PART B: AES Padding
+⚙️ Step 1: Create Small File
+notepad pad.txt
+
+Write:
+
+HELLO
+⚙️ Step 2: Encrypt (Padding applied automatically)
+openssl enc -aes-128-cbc -in pad.txt -out pad.enc -K 00112233445566778899aabbccddeeff -iv 0102030405060708090a0b0c0d0e0f10
+⚙️ Step 3: Decrypt
+openssl enc -aes-128-cbc -d -in pad.enc -out pad_dec.txt -K 00112233445566778899aabbccddeeff -iv 0102030405060708090a0b0c0d0e0f10
+⚙️ Step 4: View Output
+notepad pad_dec.txt
