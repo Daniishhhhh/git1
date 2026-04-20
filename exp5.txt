@@ -1,0 +1,56 @@
+EXPERIMENT 5: AES Encryption on Image (ECB vs CBC) + Wireshark
+🎯 Short Description
+Encrypt an image using AES in ECB and CBC modes and compare outputs.
+Capture and analyze packets using Wireshark.
+🔴 PART A: AES Encryption on Image (ECB vs CBC)
+⚠️ IMPORTANT
+
+👉 Image must be .bmp format (very important)
+
+Convert Image:
+Open image in Paint
+Save as:
+image.bmp
+⚙️ Step 1: ECB Encryption
+openssl enc -aes-128-ecb -in image.bmp -out img_ecb.bmp -K 00112233445566778899aabbccddeeff -nosalt
+⚙️ Step 2: CBC Encryption
+openssl enc -aes-128-cbc -in image.bmp -out img_cbc.bmp -K 00112233445566778899aabbccddeeff -iv 0102030405060708090a0b0c0d0e0f10 -nosalt
+⚙️ Step 3: Open Both Images
+Open:
+img_ecb.bmp
+img_cbc.bmp
+🔍 Observation
+Mode	Output
+ECB	Image structure visible (pattern seen)
+CBC	Image looks random (no pattern)
+🧠 WHY?
+ECB → same blocks → same output → pattern visible
+CBC → chaining → random output
+✅ Result (Part A)
+
+CBC mode hides patterns effectively, making it more secure than ECB.
+
+🔴 PART B: Wireshark Packet Analysis
+⚙️ Step 1: Start Wireshark
+Select interface
+Click Start Capture
+⚙️ Step 2: Apply Filters
+HTTP
+http
+DNS
+dns
+TCP
+tcp
+UDP
+udp
+HTTPS (TLS)
+tls
+⚙️ Step 3: Stop Capture
+Click stop button
+⚙️ Step 4: Save File
+File → Save As → capture.pcapng
+⚙️ Step 5: Analyze Packet
+Click packet → view:
+Source IP
+Destination IP
+Protocol
