@@ -1,0 +1,110 @@
+🧪 EXPERIMENT 6: AES Padding + Audio Steganography (Python)
+🎯 Short Description
+Demonstrate padding mechanism in AES using OpenSSL.
+Hide and extract secret message inside an audio file using Python (LSB technique with user input).
+🔴 PART A: AES Padding
+⚙️ Step 1: Create Small File
+notepad pad.txt
+
+Write:
+
+HELLO
+⚙️ Step 2: Encrypt (Padding applied automatically)
+openssl enc -aes-128-cbc -in pad.txt -out pad.enc -K 00112233445566778899aabbccddeeff -iv 0102030405060708090a0b0c0d0e0f10
+⚙️ Step 3: Decrypt
+openssl enc -aes-128-cbc -d -in pad.enc -out pad_dec.txt -K 00112233445566778899aabbccddeeff -iv 0102030405060708090a0b0c0d0e0f10
+✅ Result (Part A)
+
+Padding was automatically added and removed during encryption/decryption.
+
+🔴 PART B: Audio Steganography (Interactive Python Code)
+⚙️ Step 1: Keep Audio File
+audio.wav
+⚙️ Step 2: Create Python File
+notepad audio_stego.py
+⚙️ Step 3: Paste Code (Improved Version)
+import wave
+
+# HIDE MESSAGE
+def hide():
+    audio_file = input("Enter audio file (wav): ")
+    msg = input("Enter message: ")
+
+    msg += "#####"
+    bits = ''.join(format(ord(c), '08b') for c in msg)
+
+    song = wave.open(audio_file, 'rb')
+    frames = bytearray(song.readframes(song.getnframes()))
+    params = song.getparams()
+    song.close()
+
+    index = 0
+    for i in range(len(frames)):
+        if index < len(bits):
+            frames[i] = (frames[i] & ~1) | int(bits[index])
+            index += 1
+        else:
+            break
+
+    new_song = wave.open("stego.wav", 'wb')
+    new_song.setparams(params)
+    new_song.writeframes(frames)
+    new_song.close()
+
+    print("Message hidden in stego.wav")
+
+
+# EXTRACT MESSAGE
+def extract():
+    audio_file = input("Enter stego audio file: ")
+
+    song = wave.open(audio_file, 'rb')
+    frames = bytearray(song.readframes(song.getnframes()))
+    song.close()
+
+    bits = ""
+    for byte in frames:
+        bits += str(byte & 1)
+
+    msg = ""
+    for i in range(0, len(bits), 8):
+        byte = bits[i:i+8]
+        if len(byte) < 8:
+            break
+
+        char = chr(int(byte, 2))
+        msg += char
+
+        if msg.endswith("#####"):
+            print("Hidden Message:", msg[:-5])
+            return
+
+    print("No hidden message found!")
+
+
+# MENU
+print("1. Hide Message")
+print("2. Extract Message")
+
+choice = int(input("Enter choice: "))
+
+if choice == 1:
+    hide()
+elif choice == 2:
+    extract()
+else:
+    print("Invalid choice")
+⚙️ Step 4: Run Program
+python audio_stego.py
+🔹 Example Run
+
+Hide:
+
+Choice: 1  
+Audio file: audio.wav  
+Message: HELLO
+
+Extract:
+
+Choice: 2  
+Audio file: stego.wav  
