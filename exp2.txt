@@ -9,45 +9,79 @@ audio.wav
 2. Create Python File
 notepad audio_stego.py
 3. Paste Code
+
 import wave
 
-def hide_audio(inp, out, msg):
-    msg += "#####"
-    bits = ''.join(format(ord(c),'08b') for c in msg)
+# HIDE MESSAGE
+def hide():
+    audio_file = input("Enter audio file (wav): ")
+    msg = input("Enter message: ")
 
-    song = wave.open(inp,'rb')
+    msg += "#####"
+    bits = ''.join(format(ord(c), '08b') for c in msg)
+
+    song = wave.open(audio_file, 'rb')
     frames = bytearray(song.readframes(song.getnframes()))
     params = song.getparams()
     song.close()
 
-    for i in range(len(bits)):
-        frames[i] = (frames[i] & ~1) | int(bits[i])
+    index = 0
+    for i in range(len(frames)):
+        if index < len(bits):
+            frames[i] = (frames[i] & ~1) | int(bits[index])
+            index += 1
+        else:
+            break
 
-    new = wave.open(out,'wb')
-    new.setparams(params)
-    new.writeframes(frames)
-    new.close()
-    print("Message hidden")
+    new_song = wave.open("stego.wav", 'wb')
+    new_song.setparams(params)
+    new_song.writeframes(frames)
+    new_song.close()
 
-def show_audio(file):
-    song = wave.open(file,'rb')
+    print("Message hidden in stego.wav")
+
+
+# EXTRACT MESSAGE
+def extract():
+    audio_file = input("Enter stego audio file: ")
+
+    song = wave.open(audio_file, 'rb')
     frames = bytearray(song.readframes(song.getnframes()))
     song.close()
 
     bits = ""
-    for b in frames:
-        bits += str(b & 1)
+    for byte in frames:
+        bits += str(byte & 1)
 
     msg = ""
-    for i in range(0,len(bits),8):
-        ch = chr(int(bits[i:i+8],2))
-        msg += ch
-        if msg.endswith("#####"):
+    for i in range(0, len(bits), 8):
+        byte = bits[i:i+8]
+        if len(byte) < 8:
             break
-    print("Hidden Message:", msg[:-5])
 
-hide_audio("audio.wav","stego.wav","HELLO AUDIO")
-show_audio("stego.wav")
+        char = chr(int(byte, 2))
+        msg += char
+
+        if msg.endswith("#####"):
+            print("Hidden Message:", msg[:-5])
+            return
+
+    print("No hidden message found!")
+
+
+# MENU
+print("1. Hide Message")
+print("2. Extract Message")
+
+choice = int(input("Enter choice: "))
+
+if choice == 1:
+    hide()
+elif choice == 2:
+    extract()
+else:
+    print("Invalid choice")
+
 
 4. Run Program
 python audio_stego.py
