@@ -1,0 +1,59 @@
+from PIL import Image
+
+# Hide message
+def hide():
+    img_path = input("Enter image file: ")
+    msg = input("Enter message to hide: ")
+
+    img = Image.open(img_path)
+    data = list(img.getdata())
+
+    msg += "#####"
+    bits = ''.join(format(ord(c),'08b') for c in msg)
+
+    new = []
+    for i in range(len(bits)):
+        r,g,b = data[i]
+        r = (r & ~1) | int(bits[i])
+        new.append((r,g,b))
+
+    new += data[len(bits):]
+
+    img.putdata(new)
+    img.save("stego.png")
+    print("Message hidden in stego.png")
+
+
+# Extract message
+def show():
+    img_path = input("Enter stego image file: ")
+
+    img = Image.open(img_path)
+    data = list(img.getdata())
+
+    bits = ""
+    for r,g,b in data:
+        bits += str(r & 1)
+
+    msg = ""
+    for i in range(0,len(bits),8):
+        ch = chr(int(bits[i:i+8],2))
+        msg += ch
+        if msg.endswith("#####"):
+            break
+
+    print("Hidden Message:", msg[:-5])
+
+
+# Menu
+print("1. Hide Message")
+print("2. Extract Message")
+
+choice = int(input("Enter choice: "))
+
+if choice == 1:
+    hide()
+elif choice == 2:
+    show()
+else:
+    print("Invalid choice")
