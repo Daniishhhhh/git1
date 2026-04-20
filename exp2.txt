@@ -1,180 +1,93 @@
-🧪 **EXPERIMENT 2 – AUDIO STEGANOGRAPHY & RSA (OpenSSL)**
+🧪 EXPERIMENT 2: Audio Steganography + RSA using OpenSSL
+🎯 Short Description
+Hide and extract secret text inside an audio file using Python (LSB technique).
+Perform RSA key generation, encryption, and decryption using OpenSSL.
+🔴 PART A: Audio Steganography (Python)
+⚙️ Steps
+1. Keep Audio File
+audio.wav
+2. Create Python File
+notepad audio_stego.py
+3. Paste Code
+import wave
 
----
+def hide_audio(inp, out, msg):
+    msg += "#####"
+    bits = ''.join(format(ord(c),'08b') for c in msg)
 
-# 🎯 AIM
+    song = wave.open(inp,'rb')
+    frames = bytearray(song.readframes(song.getnframes()))
+    params = song.getparams()
+    song.close()
 
-To hide text inside an audio file using steganography and to perform RSA key generation, encryption, and decryption using OpenSSL.
+    for i in range(len(bits)):
+        frames[i] = (frames[i] & ~1) | int(bits[i])
 
----
+    new = wave.open(out,'wb')
+    new.setparams(params)
+    new.writeframes(frames)
+    new.close()
+    print("Message hidden")
 
-# 🔷 PART 2(a): AUDIO STEGANOGRAPHY
+def show_audio(file):
+    song = wave.open(file,'rb')
+    frames = bytearray(song.readframes(song.getnframes()))
+    song.close()
 
----
+    bits = ""
+    for b in frames:
+        bits += str(b & 1)
 
-## 🔹 Step 1: Create secret text file
+    msg = ""
+    for i in range(0,len(bits),8):
+        ch = chr(int(bits[i:i+8],2))
+        msg += ch
+        if msg.endswith("#####"):
+            break
+    print("Hidden Message:", msg[:-5])
 
-```bash id="a1p9x2"
-echo "Hidden audio message" > secret.txt
-# Creates a file containing the secret message
-```
+hide_audio("audio.wav","stego.wav","HELLO AUDIO")
+show_audio("stego.wav")
 
-```bash id="q4n2k1"
-cat secret.txt
-# Displays content to verify
-```
+4. Run Program
+python audio_stego.py
 
----
+✅ Result (Part A)
 
-## 🔹 Step 2: Download audio file
+Secret message successfully hidden and extracted from audio file.
 
-```bash id="z8w3m7"
-wget https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3 -O audio.mp3
-# Downloads an audio file for steganography
-```
+🔴 PART B: RSA using OpenSSL
 
----
+⚙️ Commands
 
-## 🔹 Step 3: Embed text into audio
-
-```bash id="c7r6v5"
-steghide embed -cf audio.mp3 -ef secret.txt
-# Hides secret.txt inside audio file (enter passphrase when prompted)
-```
-
----
-
-## 🔹 Step 4: Extract hidden text
-
-```bash id="n2b4x9"
-steghide extract -sf audio.mp3
-# Extracts hidden data using the same passphrase
-```
-
-```bash id="h6y1k3"
-cat secret.txt
-# Displays extracted message
-```
-
----
-
-## 📌 Expected Output
-
-* Text successfully hidden and retrieved from audio file
-* Output message displayed correctly
-
----
-
-# 🔷 PART 2(b): RSA USING OpenSSL
-
----
-
-## 🔹 Step 5: Generate private key
-
-```bash id="p9d2l6"
+1. Generate Private Key
 openssl genrsa -out private.pem 2048
-# Generates RSA private key (2048-bit)
-```
 
----
-
-## 🔹 Step 6: Generate public key
-
-```bash id="u3k7f1"
+2. Generate Public Key
 openssl rsa -in private.pem -pubout -out public.pem
-# Extracts public key from private key
-```
 
----
+3. Create Message File
+notepad msg.txt
 
-## 🔹 Step 7: Create message file
+Write:
 
-```bash id="w5c8z2"
-echo "This is RSA secret" > msg.txt
-# Creates plaintext message
-```
+THIS IS RSA TEST
 
----
+4. Encrypt Message
+openssl rsautl -encrypt -inkey public.pem -pubin -in msg.txt -out msg.enc
 
-## 🔹 Step 8: Encrypt message using public key
+5. Decrypt Message
+openssl rsautl -decrypt -inkey private.pem -in msg.enc -out msg_dec.txt
 
-```bash id="m1r4t9"
-openssl rsautl -encrypt -inkey public.pem -pubin -in msg.txt -out enc.txt
-# Encrypts message using public key
-```
+6. Encrypt Secret Key (Extra Step)
+notepad secretkey.txt
 
----
+Write:
 
-## 🔹 Step 9: Decrypt message using private key
+00112233445566778899
 
-```bash id="v8x2n5"
-openssl rsautl -decrypt -inkey private.pem -in enc.txt -out dec.txt
-# Decrypts message using private key
-```
+Encrypt:
+openssl rsautl -encrypt -inkey public.pem -pubin -in secretkey.txt -out secretkey.enc
 
-```bash id="k6q3y7"
-cat dec.txt
-# Displays decrypted message
-```
-
----
-
-## 📌 Expected Output
-
-* Encrypted file created (`enc.txt`)
-* Decrypted message matches original
-
----
-
-# 🔷 SECRET KEY ENCRYPTION USING RSA
-
----
-
-## 🔹 Step 10: Create secret key file
-
-```bash id="t2j9p4"
-echo "mysecretkey" > key.txt
-# Creates a secret key file
-```
-
----
-
-## 🔹 Step 11: Encrypt secret key
-
-```bash id="b7f1w8"
-openssl rsautl -encrypt -inkey public.pem -pubin -in key.txt -out key.enc
-# Encrypts secret key using public key
-```
-
----
-
-## 🔹 Step 12: Decrypt secret key
-
-```bash id="n4z8c6"
-openssl rsautl -decrypt -inkey private.pem -in key.enc -out key.dec
-# Decrypts using private key
-```
-
-```bash id="x3m7q2"
-cat key.dec
-# Displays decrypted key
-```
-
----
-
-# 📊 RESULT
-
-* Text successfully hidden and extracted from audio file
-* RSA key pair generated successfully
-* Encryption and decryption of message and secret key performed correctly
-
----
-
-# 🧠 KEY POINTS (FOR EXAM)
-
-* RSA uses public key (encryption) and private key (decryption)
-* Audio steganography hides data inside sound files
-* Passphrase is required for extraction
-* Encrypted data cannot be read without private key
-
----
+Decrypt:
+openssl rsautl -decrypt -inkey private.pem -in secretkey.enc -out secretkey_dec.txt
