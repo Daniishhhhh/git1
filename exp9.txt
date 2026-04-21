@@ -117,3 +117,28 @@ Audio: stego.wav
 ✅ Result (Part B)
 
 Message successfully hidden and extracted from audio file.
+
+
+tcpdump::
+
+sudo tcpdump -D
+sudo tcpdump -i enp0s3
+ping google.com
+ping 142.250.77.142
+sudo tcpdump host 142.250.77.142
+sudo tcpdump -i enp0s3 icmp
+sudo tcpdump port 80
+http://example.com
+sudo tcpdump -i enp0s3 -w file.pcap
+sudo tcpdump -r file.pcap
+sudo tcpdump -A -r file.pcap
+sudo tcpdump -xx -r file.pcap
+sudo tcpdump tcp
+sudo tcpdump -i enp0s3 tcp
+sudo tcpdump -n -i enp0s3 'tcp[tcpflags] & tcp-syn != 0'
+sudo tcpdump -n -i enp0s3 'tcp[tcpflags] & tcp-syn != 0' -w cap.pcap
+sudo tcpdump -n -i enp0s3 'tcp[tcpflags] & tcp-ack != 0' -w file1.pcap
+sudo tcpdump -n -xx -r file1.pcap
+sudo tcpdump -n -i enp0s3 'tcp[tcpflags] & (tcp-syn|tcp-ack) != 0' -w file2.pcap
+sudo tcpdump -n -xx -r file2.pcap
+sudo tcpdump -i enp0s3 -nn -p -e host example.com and port 443 and 'tcp[tcpflags] & (tcp-syn|tcp-ack) != 0'
