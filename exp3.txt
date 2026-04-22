@@ -1,59 +1,103 @@
-from PIL import Image
+**EXPERIMENT 3: GitHub Repository Creation and Push**
 
-# Hide message
-def hide():
-    img_path = input("Enter image file: ")
-    msg = input("Enter message to hide: ")
+**Objective:**
+To create a GitHub repository, push local code to remote, and clone a repository.
 
-    img = Image.open(img_path)
-    data = list(img.getdata())
+---
 
-    msg += "#####"
-    bits = ''.join(format(ord(c),'08b') for c in msg)
+### **Execution Steps**
 
-    new = []
-    for i in range(len(bits)):
-        r,g,b = data[i]
-        r = (r & ~1) | int(bits[i])
-        new.append((r,g,b))
+**Step 1: Create Repository on GitHub**
 
-    new += data[len(bits):]
+* Go to **GitHub**
+* Click **New Repository**
+* Enter repository name (e.g., `git-demo`)
+* Select **Public/Private**
+* Click **Create Repository**
 
-    img.putdata(new)
-    img.save("stego.png")
-    print("Message hidden in stego.png")
+---
 
+### **Push Local Repository to GitHub**
 
-# Extract message
-def show():
-    img_path = input("Enter stego image file: ")
+**Step 2: Open Local Project**
 
-    img = Image.open(img_path)
-    data = list(img.getdata())
+```bash
+cd git-demo
+```
 
-    bits = ""
-    for r,g,b in data:
-        bits += str(r & 1)
+---
 
-    msg = ""
-    for i in range(0,len(bits),8):
-        ch = chr(int(bits[i:i+8],2))
-        msg += ch
-        if msg.endswith("#####"):
-            break
+**Step 3: Add Remote Repository**
 
-    print("Hidden Message:", msg[:-5])
+```bash
+git remote add origin https://github.com/your-username/git-demo.git
+```
 
+* Links local repo to GitHub repo
 
-# Menu
-print("1. Hide Message")
-print("2. Extract Message")
+---
 
-choice = int(input("Enter choice: "))
+**Step 4: Verify Remote**
 
-if choice == 1:
-    hide()
-elif choice == 2:
-    show()
-else:
-    print("Invalid choice")
+```bash
+git remote -v
+```
+
+---
+
+**Step 5: Push Code to GitHub**
+
+```bash
+git push -u origin master
+```
+
+OR (if branch is main)
+
+```bash
+git push -u origin main
+```
+
+* Uploads code to GitHub
+* `-u` sets upstream tracking
+
+---
+
+### **Clone Repository from GitHub**
+
+**Step 6: Go to Parent Directory**
+
+```bash
+cd ..
+```
+
+---
+
+**Step 7: Clone Repository**
+
+```bash
+git clone https://github.com/your-username/git-demo.git
+```
+
+* Downloads repository to local system
+
+---
+
+**Step 8: Navigate into Cloned Repo**
+
+```bash
+cd git-demo
+```
+
+---
+
+**Step 9: Verify Files**
+
+```bash
+ls
+```
+
+---
+
+### **Result**
+
+Successfully created a GitHub repository, pushed local code, and cloned the repository.
