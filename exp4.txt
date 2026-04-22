@@ -1,54 +1,101 @@
-EXPERIMENT 4: AES Encryption (ECB & CBC) + tcpdump Filters
-🎯 Short Description
-Perform AES encryption and decryption using ECB and CBC modes using OpenSSL.
-Capture packets using tcpdump with protocol-based filters.
-🔴 PART A: AES Encryption (ECB & CBC)
-⚙️ Step 1: Create Plaintext File
-notepad plain.txt
+**EXPERIMENT 4: GitHub Collaboration using Pull Requests**
 
-Write:
+**Objective:**
+To understand collaboration using fork, branch, pull request, and merge in GitHub.
 
-HELLO AES EXPERIMENT
-⚙️ Step 2: AES Encryption (ECB Mode)
-openssl enc -aes-128-ecb -in plain.txt -out ecb.enc -K 00112233445566778899aabbccddeeff -nosalt
+---
 
-👉 ECB = No IV required
+### **Execution Steps**
 
-⚙️ Step 3: AES Decryption (ECB)
-openssl enc -aes-128-ecb -d -in ecb.enc -out ecb_dec.txt -K 00112233445566778899aabbccddeeff -nosalt
-⚙️ Step 4: AES Encryption (CBC Mode)
-openssl enc -aes-128-cbc -in plain.txt -out cbc.enc -K 00112233445566778899aabbccddeeff -iv 0102030405060708090a0b0c0d0e0f10 -nosalt
+### **Part A: Fork and Clone Repository**
 
-👉 CBC = IV required
+**Step 1: Fork Repository**
 
-⚙️ Step 5: AES Decryption (CBC)
-openssl enc -aes-128-cbc -d -in cbc.enc -out cbc_dec.txt -K 00112233445566778899aabbccddeeff -iv 0102030405060708090a0b0c0d0e0f10 -nosalt
-⚙️ Step 6: Verify Output
-notepad ecb_dec.txt
-notepad cbc_dec.txt
-✅ Result (Part A)
+* Go to original repository on GitHub
+* Click **Fork** (creates a copy in your account)
 
-AES encryption and decryption successfully performed using ECB and CBC modes.
+---
 
-🔴 PART B: tcpdump (Filters & Analysis)
-⚙️ Step 1: Capture All Traffic
-sudo tcpdump -i eth0
-⚙️ Step 2: Capture Limited Packets
-sudo tcpdump -i eth0 -c 10
-⚙️ Step 3: Capture TCP Packets
-sudo tcpdump -i eth0 tcp
-⚙️ Step 4: Capture UDP Packets
-sudo tcpdump -i eth0 udp
-⚙️ Step 5: Capture DNS Traffic
-sudo tcpdump -i eth0 port 53
-⚙️ Step 6: Capture HTTP Traffic
-sudo tcpdump -i eth0 port 80
-⚙️ Step 7: Save Packets
-sudo tcpdump -i eth0 -w capture.pcap
-⚙️ Step 8: Read Saved File
-tcpdump -r capture.pcap
-⚙️ Step 9: Verbose Mode
-sudo tcpdump -i eth0 -v
-⚙️ Step 10: Incoming & Outgoing
-sudo tcpdump -i eth0 inbound
-sudo tcpdump -i eth0 outbound
+**Step 2: Clone Forked Repository**
+
+```bash
+git clone https://github.com/your-username/git-demo.git
+cd git-demo
+```
+
+---
+
+### **Part B: Create Branch and Make Changes**
+
+**Step 3: Create New Branch**
+
+```bash
+git checkout -b feature-branch
+```
+
+---
+
+**Step 4: Modify File**
+
+```bash
+echo "Added new feature" >> file1.txt
+```
+
+---
+
+**Step 5: Add and Commit Changes**
+
+```bash
+git add file1.txt
+git commit -m "Added feature via branch"
+```
+
+---
+
+### **Part C: Push Changes to GitHub**
+
+**Step 6: Push Branch to GitHub**
+
+```bash
+git push origin feature-branch
+```
+
+---
+
+### **Part D: Create Pull Request**
+
+**Step 7: Open GitHub**
+
+* Go to your forked repository
+* Click **Compare & Pull Request**
+
+---
+
+**Step 8: Create Pull Request**
+
+* Add title and description
+* Click **Create Pull Request**
+
+---
+
+### **Part E: Merge Pull Request**
+
+**Step 9: Review and Merge**
+
+* Click **Merge Pull Request**
+* Confirm merge
+
+---
+
+**Step 10: Update Local Repository**
+
+```bash
+git checkout main
+git pull origin main
+```
+
+---
+
+### **Result**
+
+Successfully forked a repository, created a branch, pushed changes, and merged them using a pull request.
