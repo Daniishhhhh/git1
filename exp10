@@ -1,0 +1,102 @@
+**EXPERIMENT 10: Jenkins Logs and Build Visualization**
+
+**Objective:**
+To view build logs, analyze errors, and visualize pipeline execution in Jenkins.
+
+---
+
+### **Execution Steps**
+
+### **Part A: Run a Jenkins Job**
+
+**Step 1: Open Jenkins Dashboard**
+
+* Go to `http://localhost:8080`
+
+---
+
+**Step 2: Select Existing Job**
+
+* Open `pipeline-job` or `demo-job`
+
+---
+
+**Step 3: Trigger Build**
+
+* Click **Build Now**
+
+---
+
+### **Part B: View Console Logs**
+
+**Step 4: Open Build Details**
+
+* Click on latest build number (e.g., `#1`)
+
+---
+
+**Step 5: View Console Output**
+
+* Click **Console Output**
+
+👉 Sample Output:
+
+```bash id="r1v61y"
+Started by user admin
+Running as SYSTEM
+Building project...
+Running tests...
+Deploying application...
+Finished: SUCCESS
+```
+
+---
+
+### **Part C: Analyze Errors (If Any)**
+
+**Step 6: Identify Errors**
+
+* Look for:
+
+  * `ERROR`
+  * `FAILED`
+  * Stack traces
+
+---
+
+**Step 7: Fix and Rebuild**
+
+* Modify job or script
+* Click **Build Now** again
+
+---
+
+### **Part D: Visualize Pipeline**
+
+**Step 8: Open Stage View**
+
+* Go to job dashboard
+* View **Stage View** (Build → Test → Deploy)
+
+---
+
+**Step 9: Analyze Stage Status**
+
+* Green → Success
+* Red → Failure
+* Yellow → Unstable
+
+---
+
+### **Part E: Download Logs (Optional)**
+
+**Step 10: Save Logs**
+
+* Click **Console Output**
+* Copy or download logs for analysis
+
+---
+
+### **Result**
+
+Successfully viewed Jenkins build logs, analyzed errors, and visualized pipeline execution stages.
