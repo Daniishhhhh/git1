@@ -1,56 +1,108 @@
-EXPERIMENT 5: AES Encryption on Image (ECB vs CBC) + Wireshark
-🎯 Short Description
-Encrypt an image using AES in ECB and CBC modes and compare outputs.
-Capture and analyze packets using Wireshark.
-🔴 PART A: AES Encryption on Image (ECB vs CBC)
-⚠️ IMPORTANT
+**EXPERIMENT 5: Git Tagging and Release Management**
 
-👉 Image must be .bmp format (very important)
+**Objective:**
+To create, manage, and push Git tags for version control and releases.
 
-Convert Image:
-Open image in Paint
-Save as:
-image.bmp
-⚙️ Step 1: ECB Encryption
-openssl enc -aes-128-ecb -in image.bmp -out img_ecb.bmp -K 00112233445566778899aabbccddeeff -nosalt
-⚙️ Step 2: CBC Encryption
-openssl enc -aes-128-cbc -in image.bmp -out img_cbc.bmp -K 00112233445566778899aabbccddeeff -iv 0102030405060708090a0b0c0d0e0f10 -nosalt
-⚙️ Step 3: Open Both Images
-Open:
-img_ecb.bmp
-img_cbc.bmp
-🔍 Observation
-Mode	Output
-ECB	Image structure visible (pattern seen)
-CBC	Image looks random (no pattern)
-🧠 WHY?
-ECB → same blocks → same output → pattern visible
-CBC → chaining → random output
-✅ Result (Part A)
+---
 
-CBC mode hides patterns effectively, making it more secure than ECB.
+### **Execution Steps**
 
-🔴 PART B: Wireshark Packet Analysis
-⚙️ Step 1: Start Wireshark
-Select interface
-Click Start Capture
-⚙️ Step 2: Apply Filters
-HTTP
-http
-DNS
-dns
-TCP
-tcp
-UDP
-udp
-HTTPS (TLS)
-tls
-⚙️ Step 3: Stop Capture
-Click stop button
-⚙️ Step 4: Save File
-File → Save As → capture.pcapng
-⚙️ Step 5: Analyze Packet
-Click packet → view:
-Source IP
-Destination IP
-Protocol
+### **Part A: Create and View Tags**
+
+**Step 1: Open Existing Repository**
+
+```bash
+cd git-demo
+```
+
+---
+
+**Step 2: View Existing Tags**
+
+```bash
+git tag
+```
+
+* Lists all tags (if any)
+
+---
+
+**Step 3: Create a Lightweight Tag**
+
+```bash
+git tag v1.0
+```
+
+* Creates a simple tag for current commit
+
+---
+
+**Step 4: Create an Annotated Tag**
+
+```bash
+git tag -a v1.1 -m "Version 1.1 release"
+```
+
+* Stores additional metadata (message, author, date)
+
+---
+
+**Step 5: View Tag Details**
+
+```bash
+git show v1.1
+```
+
+---
+
+### **Part B: Push Tags to GitHub**
+
+**Step 6: Push Specific Tag**
+
+```bash
+git push origin v1.0
+```
+
+---
+
+**Step 7: Push All Tags**
+
+```bash
+git push origin --tags
+```
+
+---
+
+### **Part C: Checkout Using Tags**
+
+**Step 8: Checkout a Tag**
+
+```bash
+git checkout v1.0
+```
+
+* Moves to specific version (detached HEAD state)
+
+---
+
+### **Part D: Delete Tags**
+
+**Step 9: Delete Local Tag**
+
+```bash
+git tag -d v1.0
+```
+
+---
+
+**Step 10: Delete Tag from Remote**
+
+```bash
+git push origin --delete v1.0
+```
+
+---
+
+### **Result**
+
+Successfully created, viewed, pushed, and deleted Git tags for version control and release management.
