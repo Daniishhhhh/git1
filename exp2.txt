@@ -1,127 +1,151 @@
-🧪 EXPERIMENT 2: Audio Steganography + RSA using OpenSSL
-🎯 Short Description
-Hide and extract secret text inside an audio file using Python (LSB technique).
-Perform RSA key generation, encryption, and decryption using OpenSSL.
-🔴 PART A: Audio Steganography (Python)
-⚙️ Steps
-1. Keep Audio File
-audio.wav
-2. Create Python File
-notepad audio_stego.py
-3. Paste Code
+**EXPERIMENT 2: Working with Git Branches**
 
-import wave
+**Objective:**
+To create branches, make changes, merge branches, and resolve conflicts.
 
-# HIDE MESSAGE
-def hide():
-    audio_file = input("Enter audio file (wav): ")
-    msg = input("Enter message: ")
+---
 
-    msg += "#####"
-    bits = ''.join(format(ord(c), '08b') for c in msg)
+### **Execution Steps**
 
-    song = wave.open(audio_file, 'rb')
-    frames = bytearray(song.readframes(song.getnframes()))
-    params = song.getparams()
-    song.close()
+**Step 1: Open Existing Repository**
 
-    index = 0
-    for i in range(len(frames)):
-        if index < len(bits):
-            frames[i] = (frames[i] & ~1) | int(bits[index])
-            index += 1
-        else:
-            break
+```bash
+cd git-demo
+```
 
-    new_song = wave.open("stego.wav", 'wb')
-    new_song.setparams(params)
-    new_song.writeframes(frames)
-    new_song.close()
+---
 
-    print("Message hidden in stego.wav")
+**Step 2: Check Current Branch**
 
+```bash
+git branch
+```
 
-# EXTRACT MESSAGE
-def extract():
-    audio_file = input("Enter stego audio file: ")
+* Shows current branch (`* master` or `main`)
 
-    song = wave.open(audio_file, 'rb')
-    frames = bytearray(song.readframes(song.getnframes()))
-    song.close()
+---
 
-    bits = ""
-    for byte in frames:
-        bits += str(byte & 1)
+**Step 3: Create a New Branch**
 
-    msg = ""
-    for i in range(0, len(bits), 8):
-        byte = bits[i:i+8]
-        if len(byte) < 8:
-            break
+```bash
+git branch feature1
+```
 
-        char = chr(int(byte, 2))
-        msg += char
+* Creates a new branch named `feature1`
 
-        if msg.endswith("#####"):
-            print("Hidden Message:", msg[:-5])
-            return
+---
 
-    print("No hidden message found!")
+**Step 4: Switch to New Branch**
 
+```bash
+git checkout feature1
+```
 
-# MENU
-print("1. Hide Message")
-print("2. Extract Message")
+OR (modern command)
 
-choice = int(input("Enter choice: "))
+```bash
+git switch feature1
+```
 
-if choice == 1:
-    hide()
-elif choice == 2:
-    extract()
-else:
-    print("Invalid choice")
+---
 
+**Step 5: Modify File in Branch**
 
-4. Run Program
-python audio_stego.py
+```bash
+echo "Feature1 changes" >> file1.txt
+```
 
-✅ Result (Part A)
+---
 
-Secret message successfully hidden and extracted from audio file.
+**Step 6: Add and Commit Changes**
 
-🔴 PART B: RSA using OpenSSL
+```bash
+git add file1.txt
+git commit -m "Added feature1 changes"
+```
 
-⚙️ Commands
+---
 
-1. Generate Private Key
-openssl genrsa -out private.pem 2048
+**Step 7: Switch Back to Main Branch**
 
-2. Generate Public Key
-openssl rsa -in private.pem -pubout -out public.pem
+```bash
+git checkout master
+```
 
-3. Create Message File
-notepad msg.txt
+OR
 
-Write:
+```bash
+git switch main
+```
 
-THIS IS RSA TEST
+---
 
-4. Encrypt Message
-openssl rsautl -encrypt -inkey public.pem -pubin -in msg.txt -out msg.enc
+**Step 8: Modify File in Main Branch (to create conflict)**
 
-5. Decrypt Message
-openssl rsautl -decrypt -inkey private.pem -in msg.enc -out msg_dec.txt
+```bash
+echo "Main branch changes" >> file1.txt
+```
 
-6. Encrypt Secret Key (Extra Step)
-notepad secretkey.txt
+---
 
-Write:
+**Step 9: Add and Commit Changes**
 
-00112233445566778899
+```bash
+git add file1.txt
+git commit -m "Updated in main branch"
+```
 
-Encrypt:
-openssl rsautl -encrypt -inkey public.pem -pubin -in secretkey.txt -out secretkey.enc
+---
 
-Decrypt:
-openssl rsautl -decrypt -inkey private.pem -in secretkey.enc -out secretkey_dec.txt
+**Step 10: Merge Feature Branch into Main**
+
+```bash
+git merge feature1
+```
+
+---
+
+**Step 11: Resolve Merge Conflict (if occurs)**
+
+* Open `file1.txt`
+* Remove conflict markers:
+
+```
+<<<<<<< HEAD
+Main branch changes
+=======
+Feature1 changes
+>>>>>>> feature1
+```
+
+* Keep desired content manually
+
+---
+
+**Step 12: Add Resolved File**
+
+```bash
+git add file1.txt
+```
+
+---
+
+**Step 13: Complete Merge**
+
+```bash
+git commit -m "Resolved merge conflict"
+```
+
+---
+
+**Step 14: View Branches**
+
+```bash
+git branch
+```
+
+---
+
+### **Result**
+
+Successfully created branches, committed changes, merged branches, and resolved conflicts.
