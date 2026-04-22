@@ -1,144 +1,98 @@
-EXPERIMENT 9: RSA using OpenSSL + Audio Steganography (Python)
-🎯 Short Description
-Perform RSA key generation, encryption, and decryption using OpenSSL.
-Hide and extract secret message inside an audio file using Python (LSB technique).
-🔴 PART A: RSA using OpenSSL
-⚙️ Step 1: Generate Private Key
-openssl genrsa -out private.pem 2048
-⚙️ Step 2: Generate Public Key
-openssl rsa -in private.pem -pubout -out public.pem
-⚙️ Step 3: Create Message File
-notepad msg.txt
+**EXPERIMENT 9: Jenkins Declarative Pipeline**
 
-Write:
+**Objective:**
+To create and execute a Jenkins Declarative Pipeline using a Jenkinsfile.
 
-HELLO RSA
-⚙️ Step 4: Encrypt Message
-openssl rsautl -encrypt -inkey public.pem -pubin -in msg.txt -out msg.enc
-⚙️ Step 5: Decrypt Message
-openssl rsautl -decrypt -inkey private.pem -in msg.enc -out msg_dec.txt
-⚙️ Step 6: View Output
-notepad msg_dec.txt
-✅ Result (Part A)
+---
 
-RSA encryption and decryption successfully performed using public and private keys.
+### **Execution Steps**
 
-🔴 PART B: Audio Steganography (Python – Input Based)
-⚙️ Step 1: Keep Audio File
-audio.wav
-⚙️ Step 2: Create Python File
-notepad audio_stego.py
-⚙️ Step 3: Paste Code
-import wave
+### **Part A: Create Pipeline Job**
 
-# HIDE
-def hide():
-    audio_file = input("Enter audio file: ")
-    msg = input("Enter message: ")
+**Step 1: Open Jenkins Dashboard**
 
-    msg += "#####"
-    bits = ''.join(format(ord(c),'08b') for c in msg)
+* Go to `http://localhost:8080`
 
-    song = wave.open(audio_file,'rb')
-    frames = bytearray(song.readframes(song.getnframes()))
-    params = song.getparams()
-    song.close()
+---
 
-    index = 0
-    for i in range(len(frames)):
-        if index < len(bits):
-            frames[i] = (frames[i] & ~1) | int(bits[index])
-            index += 1
-        else:
-            break
+**Step 2: Create New Item**
 
-    new_song = wave.open("stego.wav",'wb')
-    new_song.setparams(params)
-    new_song.writeframes(frames)
-    new_song.close()
+* Click **New Item**
+* Enter name → `pipeline-job`
+* Select **Pipeline**
+* Click **OK**
 
-    print("Message hidden in stego.wav")
+---
 
+### **Part B: Configure Pipeline**
 
-# EXTRACT
-def extract():
-    audio_file = input("Enter stego audio file: ")
+**Step 3: Scroll to Pipeline Section**
 
-    song = wave.open(audio_file,'rb')
-    frames = bytearray(song.readframes(song.getnframes()))
-    song.close()
+* In **Pipeline → Definition**, select:
+  **Pipeline script**
 
-    bits = ""
-    for byte in frames:
-        bits += str(byte & 1)
+---
 
-    msg = ""
-    for i in range(0,len(bits),8):
-        byte = bits[i:i+8]
-        if len(byte) < 8:
-            break
+### **Part C: Add Jenkinsfile (Minimal Code)**
 
-        char = chr(int(byte,2))
-        msg += char
+**Step 4: Enter Pipeline Script**
 
-        if msg.endswith("#####"):
-            print("Hidden Message:", msg[:-5])
-            return
+```groovy id="s9iqtf"
+pipeline {
+    agent any
 
-    print("No message found")
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building project...'
+            }
+        }
 
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+            }
+        }
 
-# MENU
-print("1. Hide Message")
-print("2. Extract Message")
+        stage('Deploy') {
+            steps {
+                echo 'Deploying application...'
+            }
+        }
+    }
+}
+```
 
-choice = int(input("Enter choice: "))
+---
 
-if choice == 1:
-    hide()
-elif choice == 2:
-    extract()
-else:
-    print("Invalid choice")
-⚙️ Step 4: Run Program
-python audio_stego.py
-🔹 Example Run
+### **Part D: Run Pipeline**
 
-Hide:
+**Step 5: Save Job**
 
-Choice: 1  
-Audio: audio.wav  
-Message: HELLO
+* Click **Save**
 
-Extract:
+---
 
-Choice: 2  
-Audio: stego.wav
-✅ Result (Part B)
+**Step 6: Build Pipeline**
 
-Message successfully hidden and extracted from audio file.
+* Click **Build Now**
 
+---
 
-tcpdump::
+### **Part E: View Output**
 
-sudo tcpdump -D
-sudo tcpdump -i enp0s3
-ping google.com
-ping 142.250.77.142
-sudo tcpdump host 142.250.77.142
-sudo tcpdump -i enp0s3 icmp
-sudo tcpdump port 80
-http://example.com
-sudo tcpdump -i enp0s3 -w file.pcap
-sudo tcpdump -r file.pcap
-sudo tcpdump -A -r file.pcap
-sudo tcpdump -xx -r file.pcap
-sudo tcpdump tcp
-sudo tcpdump -i enp0s3 tcp
-sudo tcpdump -n -i enp0s3 'tcp[tcpflags] & tcp-syn != 0'
-sudo tcpdump -n -i enp0s3 'tcp[tcpflags] & tcp-syn != 0' -w cap.pcap
-sudo tcpdump -n -i enp0s3 'tcp[tcpflags] & tcp-ack != 0' -w file1.pcap
-sudo tcpdump -n -xx -r file1.pcap
-sudo tcpdump -n -i enp0s3 'tcp[tcpflags] & (tcp-syn|tcp-ack) != 0' -w file2.pcap
-sudo tcpdump -n -xx -r file2.pcap
-sudo tcpdump -i enp0s3 -nn -p -e host example.com and port 443 and 'tcp[tcpflags] & (tcp-syn|tcp-ack) != 0'
+**Step 7: Check Console Output**
+
+* Click build number → **Console Output**
+
+---
+
+**Step 8: View Pipeline Stages**
+
+* Open **Stage View** to see Build → Test → Deploy flow
+
+---
+
+### **Result**
+
+Successfully created and executed a Jenkins Declarative Pipeline with multiple stages.
