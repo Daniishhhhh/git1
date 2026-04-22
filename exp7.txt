@@ -1,118 +1,79 @@
-EXPERIMENT 7: AES Error Effect (ECB vs CBC) + Image Steganography (Python)
-🎯 Short Description
-Demonstrate effect of single-bit error in AES ECB and CBC modes.
-Implement LSB Image Steganography using Python with user input.
-🔴 PART A: AES Error Effect
-⚙️ Step 1: Use Existing Encrypted Files
+**EXPERIMENT 7: Jenkins Freestyle Job**
 
-(From previous AES experiment)
+**Objective:**
+To create and execute a basic Jenkins Freestyle job.
 
-ecb.enc
-cbc.enc
-⚙️ Step 2: Create Copies
-copy ecb.enc ecb_error.enc
-copy cbc.enc cbc_error.enc
-⚙️ Step 3: Introduce Error (HxD)
-Open both files in HxD
-Go to middle of file
-Change 1 byte only
-Save
-⚙️ Step 4: Decrypt ECB Error File
-openssl enc -aes-128-ecb -d -in ecb_error.enc -out ecb_error_dec.txt -K 00112233445566778899aabbccddeeff -nosalt
-⚙️ Step 5: Decrypt CBC Error File
-openssl enc -aes-128-cbc -d -in cbc_error.enc -out cbc_error_dec.txt -K 00112233445566778899aabbccddeeff -iv 0102030405060708090a0b0c0d0e0f10 -nosalt
-🔍 Observation
-Mode	Effect
-ECB	Only one block corrupted
-CBC	Two blocks corrupted
-✅ Result (Part A)
+---
 
-Single-bit error affects only one block in ECB but propagates to two blocks in CBC.
+### **Execution Steps**
 
-🔴 PART B: Image Steganography (Python – Input Based)
-⚙️ Step 1: Keep Image
-image.png
-⚙️ Step 2: Create Python File
-notepad image_stego.py
-⚙️ Step 3: Paste Code
-from PIL import Image
+### **Part A: Open Jenkins**
 
-# HIDE
-def hide():
-    img_path = input("Enter image file: ")
-    msg = input("Enter message: ")
+**Step 1: Start Jenkins**
 
-    msg += "#####"
-    bits = ''.join(format(ord(c),'08b') for c in msg)
+```bash
+sudo systemctl start jenkins
+```
 
-    img = Image.open(img_path)
-    data = list(img.getdata())
+---
 
-    new = []
-    index = 0
+**Step 2: Open Jenkins Dashboard**
 
-    for pixel in data:
-        r,g,b = pixel
-        if index < len(bits):
-            r = (r & ~1) | int(bits[index])
-            index += 1
-        new.append((r,g,b))
+* Open browser → `http://localhost:8080`
+* Login to Jenkins
 
-    img.putdata(new)
-    img.save("stego.png")
-    print("Message hidden in stego.png")
+---
 
+### **Part B: Create Freestyle Job**
 
-# EXTRACT
-def extract():
-    img_path = input("Enter stego image: ")
+**Step 3: Create New Job**
 
-    img = Image.open(img_path)
-    data = list(img.getdata())
+* Click **New Item**
+* Enter name → `demo-job`
+* Select **Freestyle Project**
+* Click **OK**
 
-    bits = ""
-    for r,g,b in data:
-        bits += str(r & 1)
+---
 
-    msg = ""
-    for i in range(0,len(bits),8):
-        byte = bits[i:i+8]
-        if len(byte) < 8:
-            break
+### **Part C: Configure Job**
 
-        ch = chr(int(byte,2))
-        msg += ch
+**Step 4: Add Build Step**
 
-        if msg.endswith("#####"):
-            print("Hidden Message:", msg[:-5])
-            return
+* Scroll to **Build Section**
+* Click **Add Build Step → Execute Shell**
 
-    print("No message found")
+---
 
+**Step 5: Add Simple Command**
 
-# MENU
-print("1. Hide Message")
-print("2. Extract Message")
+```bash
+echo "Hello from Jenkins"
+```
 
-choice = int(input("Enter choice: "))
+---
 
-if choice == 1:
-    hide()
-elif choice == 2:
-    extract()
-else:
-    print("Invalid choice")
-⚙️ Step 4: Run Program
-python image_stego.py
-🔹 Example Run
+### **Part D: Build Job**
 
-Hide:
+**Step 6: Save Job**
 
-Choice: 1  
-Image: image.png  
-Message: HELLO
+* Click **Save**
 
-Extract:
+---
 
-Choice: 2  
-Image: stego.png  
+**Step 7: Build the Job**
+
+* Click **Build Now**
+
+---
+
+### **Part E: View Output**
+
+**Step 8: Check Console Output**
+
+* Click build number → **Console Output**
+
+---
+
+### **Result**
+
+Successfully created and executed a Jenkins Freestyle job and viewed the output.
