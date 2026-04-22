@@ -1,58 +1,93 @@
-EXPERIMENT 8: AES on Image (ECB vs CBC) + Image Steganography (OpenStego + Hex Editor)
-🎯 Short Description
-Perform AES encryption on an image using ECB and CBC modes and compare results.
-Hide data inside an image and recover corrupted image using Hex Editor.
-🔴 PART A: AES Encryption on Image (ECB vs CBC)
-⚠️ IMPORTANT
+**EXPERIMENT 8: Build Triggers in Jenkins**
 
-👉 Convert image to BMP format (no compression)
+**Objective:**
+To configure automatic build triggers in Jenkins (poll SCM / webhook).
 
-Convert:
-Open image in Paint
-Save as:
-image.bmp
-⚙️ Step 1: ECB Encryption
-openssl enc -aes-128-ecb -in image.bmp -out img_ecb.bmp -K 00112233445566778899aabbccddeeff -nosalt
-⚙️ Step 2: CBC Encryption
-openssl enc -aes-128-cbc -in image.bmp -out img_cbc.bmp -K 00112233445566778899aabbccddeeff -iv 0102030405060708090a0b0c0d0e0f10 -nosalt
-⚙️ Step 3: Open Images
-img_ecb.bmp
-img_cbc.bmp
-🔍 Observation
-Mode	Output
-ECB	Pattern visible
-CBC	Fully random
+---
 
+### **Execution Steps**
 
-PART B: Image Steganography + Hex Recovery
-⚙️ Step 1: Create Secret File
-notepad secret.txt
+### **Part A: Open Existing Job**
 
-Write:
+**Step 1: Open Jenkins Dashboard**
 
-THIS IS SECRET
-⚙️ Step 2: Hide Data (OpenStego)
-Open OpenStego
-Select Data Hiding → Embed
-Inputs:
-Message File → secret.txt
-Cover File → cover.png
-Output File → stego.png
-Password → 1234
-Click Hide Data
-⚙️ Step 3: Extract Data
-Open OpenStego → Extract
-Select stego.png
-Enter password → 1234
-Extract
-⚙️ Step 4: Corrupt Image (HxD)
-Open stego.png in HxD
-Modify first 8 bytes:
-00 00 00 00 00 00 00 00
-Save → Image will not open
-⚙️ Step 5: Recover Image
+* Go to `http://localhost:8080`
+* Select your job → `demo-job`
 
-Restore PNG header:
+---
 
-89 50 4E 47 0D 0A 1A 0A
-Save → Image opens
+**Step 2: Configure Job**
+
+* Click **Configure**
+
+---
+
+### **Part B: Configure Poll SCM (Auto Build)**
+
+**Step 3: Enable Poll SCM**
+
+* Scroll to **Build Triggers**
+* Select **Poll SCM**
+
+---
+
+**Step 4: Add Schedule**
+
+```bash
+H/2 * * * *
+```
+
+* Checks GitHub repo every 2 minutes for changes
+
+---
+
+### **Part C: Connect GitHub Repository**
+
+**Step 5: Add Source Code Management**
+
+* Select **Git**
+* Enter repository URL:
+
+```
+https://github.com/your-username/git-demo.git
+```
+
+---
+
+### **Part D: Webhook Trigger (Alternative)**
+
+**Step 6: Enable GitHub Hook Trigger**
+
+* Select **GitHub hook trigger for GITScm polling**
+
+---
+
+**Step 7: Configure Webhook in GitHub**
+
+* Go to GitHub repo → **Settings → Webhooks**
+* Add webhook URL:
+
+```
+http://<your-ip>:8080/github-webhook/
+```
+
+---
+
+### **Part E: Save and Test**
+
+**Step 8: Save Configuration**
+
+* Click **Save**
+
+---
+
+**Step 9: Test Trigger**
+
+* Make a change in GitHub and push
+* Jenkins automatically starts build
+
+---
+
+### **Result**
+
+Successfully configured automatic build triggers using Poll SCM and GitHub Webhooks.
