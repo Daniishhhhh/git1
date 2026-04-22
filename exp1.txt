@@ -1,79 +1,128 @@
-🧪 EXPERIMENT 1: Steganography (Image) + Packet Capture (tcpdump)
-🎯 Short Description
-Hide secret text inside an image using steganography and recover corrupted image using hex editor.
-Capture and analyze network packets using tcpdump with filters and file operations.
-🔴 PART A: Image Steganography + Hex Recovery
-⚙️ Steps
-1. Create Secret File
-notepad secret.txt
+**EXPERIMENT 1: Introduction to Git and Local Repository Management**
 
-Write:
+**Objective:**
+To create a local Git repository, add files, commit changes, and view history.
 
-THIS IS A SECRET MESSAGE
-2. Hide Data using OpenStego
-Open OpenStego
-Select Data Hiding → Embed
-Input:
-Message File → secret.txt
-Cover File → cover.png
-Output File → stego.png
-Password → 1234
-Click Hide Data
-3. Extract Hidden Data
-Open OpenStego → Extract
-Select stego.png
-Enter password 1234
-Click Extract
-4. Corrupt Image using HxD
-Open stego.png in HxD
-Go to offset 00000000
-Replace first 8 bytes:
-00 00 00 00 00 00 00 00
-Save → Image will NOT open
-5. Recover Image
+---
 
-Replace first 8 bytes with PNG header:
+### **Execution Steps**
 
-89 50 4E 47 0D 0A 1A 0A
-Save → Image opens successfully
-✅ Result (Part A)
-Message hidden and extracted successfully
-Corrupted image recovered using header restoration
-🔴 PART B: Packet Capture using tcpdump
-⚙️ Commands
+**Step 1: Open Terminal / Git Bash**
+Open Git Bash or terminal in your working directory.
 
-Capture all packets
-sudo tcpdump -i eth0
+---
 
-Capture 10 packets
-sudo tcpdump -i eth0 -c 10
+**Step 2: Create Project Directory**
 
-Capture TCP packets
-sudo tcpdump -i eth0 tcp
+```bash
+mkdir git-demo
+cd git-demo
+```
 
-Capture UDP packets
-sudo tcpdump -i eth0 udp
+---
 
-Capture DNS traffic
-sudo tcpdump -i eth0 port 53
+**Step 3: Initialize Git Repository**
 
-Capture HTTP traffic
-sudo tcpdump -i eth0 port 80
+```bash
+git init
+```
 
-Save packets to file
-sudo tcpdump -i eth0 -w capture.pcap
+* Initializes a new Git repository
+* Creates hidden `.git` directory
 
-Read saved packets
-tcpdump -r capture.pcap
+---
 
-Verbose output
-sudo tcpdump -i eth0 -v
+**Step 4: Create a File**
 
-Incoming traffic
-sudo tcpdump -i eth0 inbound
+```bash
+echo "Hello DevOps Lab" > file1.txt
+```
 
-Outgoing traffic
-sudo tcpdump -i eth0 outbound
+---
 
+**Step 5: Check Repository Status**
 
-Replace eth0 with your interface (Wi-Fi / wlan0 / Ethernet)
+```bash
+git status
+```
+
+* Shows untracked files
+
+---
+
+**Step 6: Add File to Staging Area**
+
+```bash
+git add file1.txt
+```
+
+OR (add all files)
+
+```bash
+git add .
+```
+
+---
+
+**Step 7: Commit the File**
+
+```bash
+git commit -m "Initial commit"
+```
+
+* Saves snapshot of project
+
+---
+
+**Step 8: Modify the File**
+
+```bash
+echo "Second line" >> file1.txt
+```
+
+---
+
+**Step 9: Check Status Again**
+
+```bash
+git status
+```
+
+* Shows modified file
+
+---
+
+**Step 10: Add and Commit Changes**
+
+```bash
+git add file1.txt
+git commit -m "Updated file1"
+```
+
+---
+
+**Step 11: View Commit History**
+
+```bash
+git log
+```
+
+Short version:
+
+```bash
+git log --oneline
+```
+
+---
+
+**Step 12: View Changes Between Commits**
+
+```bash
+git diff
+```
+
+---
+
+### **Result**
+
+Successfully created a Git repository, added files, committed changes, and viewed commit history.
