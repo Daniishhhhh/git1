@@ -1,79 +1,171 @@
-**EXPERIMENT 7: Jenkins Freestyle Job**
-
-**Objective:**
-To create and execute a basic Jenkins Freestyle job.
+**EXPERIMENT 7: Jenkins Freestyle Job using Git + Maven (Windows Corrected)**
 
 ---
 
-### **Execution Steps**
+## 🎯 **Objective**
 
-### **Part A: Open Jenkins**
+To create a Jenkins Freestyle Job that pulls a Maven project from GitHub and builds it successfully.
 
-**Step 1: Start Jenkins**
+---
 
-```bash
-sudo systemctl start jenkins
+## 🧭 **Startup Guide (Windows System)**
+
+### **Step 0: Start Jenkins**
+
+```bat
+cd C:\Program Files\Jenkins
+java -jar jenkins.war
 ```
 
+👉 Open browser:
+
+```
+http://localhost:8080
+```
+
+👉 Login
+
 ---
 
-**Step 2: Open Jenkins Dashboard**
+## ⚙️ **Execution Steps**
 
-* Open browser → `http://localhost:8080`
-* Login to Jenkins
-
----
-
-### **Part B: Create Freestyle Job**
-
-**Step 3: Create New Job**
+### **Step 1: Create New Job**
 
 * Click **New Item**
-* Enter name → `demo-job`
+* Name: `demo-job`
 * Select **Freestyle Project**
 * Click **OK**
 
 ---
 
-### **Part C: Configure Job**
+### **Step 2: Configure Git Repository**
 
-**Step 4: Add Build Step**
+* Go to **Source Code Management**
+* Select **Git**
 
-* Scroll to **Build Section**
-* Click **Add Build Step → Execute Shell**
+👉 Repository URL:
 
----
-
-**Step 5: Add Simple Command**
-
-```bash
-echo "Hello from Jenkins"
+```
+https://github.com/Daniishhhhh/maven-project.git
 ```
 
 ---
 
-### **Part D: Build Job**
+### ⚠️ **IMPORTANT FIX (VERY IMPORTANT)**
 
-**Step 6: Save Job**
+👉 In **Branches to build**, change:
 
+```
+*/main
+```
+
+❌ Default is:
+
+```
+*/master   (WRONG)
+```
+
+---
+
+### **Step 3: Add Build Step (Windows)**
+
+👉 Build → Add Build Step → Execute Windows batch command
+
+```bat
+echo Building Maven Project
+mvn clean package
+```
+
+---
+
+### ⚠️ **CRITICAL CHECK (WHY YOUR ERROR CAME)**
+
+👉 Ensure your GitHub repo has:
+
+```
+pom.xml  (MUST be in root)
+```
+
+Correct structure:
+
+```
+maven-project/
+ ├── pom.xml
+ ├── src/
+```
+
+---
+
+### **Step 4: Save Job**
+
+* Click **Apply**
 * Click **Save**
 
 ---
 
-**Step 7: Build the Job**
+### **Step 5: Build the Job**
 
 * Click **Build Now**
 
 ---
 
-### **Part E: View Output**
+### **Step 6: View Console Output**
 
-**Step 8: Check Console Output**
-
-* Click build number → **Console Output**
+* Click **Build #1**
+* Click **Console Output**
 
 ---
 
-### **Result**
+## ✅ **Expected Output**
 
-Successfully created and executed a Jenkins Freestyle job and viewed the output.
+```
+BUILD SUCCESS
+```
+
+---
+
+## ❌ **Common Errors & Fix**
+
+### ❌ Error: No POM file
+
+👉 Fix:
+
+* Set branch to `main`
+* Ensure repo has `pom.xml` at root
+
+---
+
+### ❌ Error: mvn not recognized
+
+```bat
+"C:\Program Files\Apache\maven\bin\mvn.cmd" clean package
+```
+
+---
+
+### ❌ Error: Wrong directory
+
+👉 Jenkins automatically clones repo → no need to `cd`
+
+---
+
+## 📁 **Jenkins Workspace**
+
+```
+C:\ProgramData\Jenkins\.jenkins\workspace\demo-job
+```
+
+---
+
+## 🧠 **Key Points (Exam)**
+
+* Jenkins pulls code automatically from Git
+* Must set correct branch (`main`)
+* `pom.xml` must be in root
+* Use Windows batch commands
+
+---
+
+## 🎯 **Result**
+
+Successfully created a Jenkins Freestyle Job that pulls a Maven project from GitHub and builds it using Maven.
