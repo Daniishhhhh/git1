@@ -1,0 +1,187 @@
+**EXPERIMENT 15: Introduction to Docker and Basic Commands (Windows)**
+
+---
+
+## 🎯 **Objective**
+
+To understand Docker basics and run containers using essential Docker commands.
+
+---
+
+## 🧭 **Startup Guide (Windows System)**
+
+### **Step 0: Start Docker**
+
+* Open **Docker Desktop**
+* Ensure status shows: **Docker is running**
+
+---
+
+### **Step 1: Open Command Prompt**
+
+```bat
+docker --version
+```
+
+👉 Verify Docker installation
+
+---
+
+## ⚙️ **Execution Steps**
+
+---
+
+### **Step 2: Pull Docker Image**
+
+```bat
+docker pull hello-world
+```
+
+👉 Downloads a sample image from Docker Hub
+
+---
+
+### **Step 3: Run Docker Container**
+
+```bat
+docker run hello-world
+```
+
+👉 Expected output:
+
+* Displays **Hello from Docker!**
+
+---
+
+### **Step 4: List Docker Images**
+
+```bat
+docker images
+```
+
+👉 Shows downloaded images
+
+---
+
+### **Step 5: List Running Containers**
+
+```bat
+docker ps
+```
+
+---
+
+### **Step 6: List All Containers**
+
+```bat
+docker ps -a
+```
+
+---
+
+### **Step 7: Run Ubuntu Container**
+
+```bat
+docker run -it ubuntu
+```
+
+👉 Opens interactive Ubuntu shell
+
+---
+
+### **Step 8: Exit Container**
+
+```bash
+exit
+```
+
+---
+
+### **Step 9: Run Container in Detached Mode**
+
+```bat
+docker run -d nginx
+```
+
+👉 Runs Nginx in background
+
+---
+
+### **Step 10: Check Running Containers**
+
+```bat
+docker ps
+```
+
+---
+
+### **Step 11: Stop Container**
+
+```bat
+docker stop <container_id>
+```
+
+---
+
+### **Step 12: Remove Container**
+
+```bat
+docker rm <container_id>
+```
+
+---
+
+### **Step 13: Remove Image**
+
+```bat
+docker rmi hello-world
+```
+
+---
+
+## 📌 **Important Commands Summary**
+
+```bat
+docker pull hello-world
+docker run hello-world
+docker images
+docker ps
+docker ps -a
+docker run -it ubuntu
+docker run -d nginx
+docker stop <container_id>
+docker rm <container_id>
+docker rmi <image_name>
+```
+
+---
+
+## ⚠️ **Common Errors & Fix**
+
+### ❌ Docker not recognized
+
+* Restart system
+* Ensure Docker Desktop is running
+
+---
+
+### ❌ Permission issues
+
+* Run CMD as Administrator
+
+---
+
+## 🧠 **Key Points (Exam)**
+
+* Docker = containerization platform
+* Images → blueprint
+* Containers → running instances
+* `docker run` creates container
+* `-it` → interactive mode
+* `-d` → detached mode
+
+---
+
+## 🎯 **Result**
+
+Successfully executed basic Docker commands and understood container lifecycle.
