@@ -1,102 +1,169 @@
-**EXPERIMENT 10: Jenkins Logs and Build Visualization**
-
-**Objective:**
-To view build logs, analyze errors, and visualize pipeline execution in Jenkins.
+**EXPERIMENT 10: Jenkins Pipeline Logs and Visualization (Windows)**
 
 ---
 
-### **Execution Steps**
+## 🎯 **Objective**
 
-### **Part A: Run a Jenkins Job**
-
-**Step 1: Open Jenkins Dashboard**
-
-* Go to `http://localhost:8080`
+To analyze Jenkins pipeline execution using console logs and visualize different stages of the pipeline.
 
 ---
 
-**Step 2: Select Existing Job**
+## 🧭 **Startup Guide (Windows System)**
 
-* Open `pipeline-job` or `demo-job`
+### **Step 0: Start Jenkins**
+
+```bat
+cd C:\Program Files\Jenkins
+java -jar jenkins.war
+```
+
+👉 Open browser:
+
+```
+http://localhost:8080
+```
+
+👉 Login to Jenkins
 
 ---
 
-**Step 3: Trigger Build**
+## ⚙️ **Execution Steps**
+
+---
+
+### **Step 1: Create a Pipeline Job**
+
+* Click **New Item**
+* Enter name: `log-demo`
+* Select **Pipeline**
+* Click **OK**
+
+---
+
+### **Step 2: Configure Pipeline Script (Direct Method)**
+
+Scroll to **Pipeline Section**
+
+👉 Definition:
+
+```
+Pipeline script
+```
+
+👉 Paste the following script:
+
+```groovy
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                bat 'echo Building project'
+                bat 'dir'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                bat 'echo Running tests'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                bat 'echo Deploying application'
+            }
+        }
+    }
+}
+```
+
+---
+
+### **Step 3: Save Job**
+
+* Click **Apply**
+* Click **Save**
+
+---
+
+### **Step 4: Run Pipeline**
 
 * Click **Build Now**
 
 ---
 
-### **Part B: View Console Logs**
+### **Step 5: View Console Logs**
 
-**Step 4: Open Build Details**
-
-* Click on latest build number (e.g., `#1`)
-
----
-
-**Step 5: View Console Output**
-
+* Click **Build #1**
 * Click **Console Output**
 
-👉 Sample Output:
+👉 Example output:
 
-```bash id="r1v61y"
-Started by user admin
-Running as SYSTEM
-Building project...
-Running tests...
-Deploying application...
-Finished: SUCCESS
+```
+Building project
+Running tests
+Deploying application
 ```
 
 ---
 
-### **Part C: Analyze Errors (If Any)**
+### **Step 6: View Stage Visualization**
 
-**Step 6: Identify Errors**
+* Click **Stage View** (or Pipeline View)
 
-* Look for:
+👉 Shows:
 
-  * `ERROR`
-  * `FAILED`
-  * Stack traces
-
----
-
-**Step 7: Fix and Rebuild**
-
-* Modify job or script
-* Click **Build Now** again
+* Build stage
+* Test stage
+* Deploy stage
+* Status (Success/Failure)
 
 ---
 
-### **Part D: Visualize Pipeline**
+## 📁 **Workspace Location**
 
-**Step 8: Open Stage View**
-
-* Go to job dashboard
-* View **Stage View** (Build → Test → Deploy)
-
----
-
-**Step 9: Analyze Stage Status**
-
-* Green → Success
-* Red → Failure
-* Yellow → Unstable
+```
+C:\ProgramData\Jenkins\.jenkins\workspace\log-demo
+```
 
 ---
 
-### **Part E: Download Logs (Optional)**
+## 📌 **Important Commands Used**
 
-**Step 10: Save Logs**
-
-* Click **Console Output**
-* Copy or download logs for analysis
+```bat
+echo Building project
+dir
+```
 
 ---
 
-### **Result**
+## ⚠️ **Common Errors & Fix**
 
-Successfully viewed Jenkins build logs, analyzed errors, and visualized pipeline execution stages.
+### ❌ bat not working
+
+* Ensure Windows system
+* Use `bat` instead of `sh`
+
+---
+
+### ❌ No logs visible
+
+* Ensure pipeline executed successfully
+* Check Console Output section
+
+---
+
+## 🧠 **Key Points (Exam)**
+
+* Console Output shows step-by-step execution
+* Stage View shows pipeline flow
+* Used for debugging CI/CD pipelines
+* Declarative pipeline improves readability
+
+---
+
+## 🎯 **Result**
+
+Successfully executed a Jenkins pipeline and analyzed logs and stage-wise visualization.
