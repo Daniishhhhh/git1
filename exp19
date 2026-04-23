@@ -1,0 +1,160 @@
+**EXPERIMENT 19: Jenkins and Docker Integration (Windows – FIXED VERSION)**
+
+---
+
+## 🎯 Objective
+
+To integrate Jenkins with Docker to build and run containers successfully.
+
+---
+
+## 🧭 Startup Guide
+
+### Step 0: Start Docker Desktop
+
+* Open Docker Desktop
+* Ensure: **Docker is running**
+
+---
+
+### Step 1: Start Jenkins (IMPORTANT)
+
+```bat
+cd C:\Program Files\Jenkins
+java -jar jenkins.war
+```
+
+👉 Run CMD as **Administrator**
+
+---
+
+## ⚙️ Execution Steps
+
+---
+
+### Step 2: Create Project
+
+```bat
+cd C:\Users\danis\OneDrive\Desktop
+mkdir jenkins-docker
+cd jenkins-docker
+```
+
+---
+
+### Step 3: Create App.java
+
+```bat
+notepad App.java
+```
+
+```java
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Hello from Jenkins + Docker!");
+    }
+}
+```
+
+---
+
+### Step 4: Create Dockerfile
+
+```bat
+notepad Dockerfile
+```
+
+```dockerfile
+FROM openjdk:17
+WORKDIR /app
+COPY . /app
+RUN javac App.java
+CMD ["java", "App"]
+```
+
+---
+
+### Step 5: Push to GitHub
+
+```bat
+git init
+git add .
+git commit -m "Docker project"
+git branch -M main
+git remote add origin https://github.com/Daniishhhhh/jenkins-docker.git
+git push -u origin main
+```
+
+---
+
+### Step 6: Jenkins Job Setup
+
+* New Item → `docker-job`
+* Freestyle Project
+
+👉 Git:
+
+```
+https://github.com/Daniishhhhh/jenkins-docker.git
+```
+
+👉 Branch:
+
+```
+*/main
+```
+
+---
+
+### Step 7: Build Step (IMPORTANT FIX)
+
+```bat
+echo Checking Docker
+docker version
+
+echo Building Image
+docker build -t jenkins-docker-app .
+
+echo Running Container
+docker run jenkins-docker-app
+```
+
+---
+
+### Step 8: Build
+
+* Click **Build Now**
+
+---
+
+## ✅ Expected Output
+
+```
+Hello from Jenkins + Docker!
+BUILD SUCCESS
+```
+
+---
+
+## ⚠️ Common Errors
+
+### ❌ Docker API error
+
+👉 Fix:
+
+* Start Docker Desktop
+* Run Jenkins as Admin
+
+---
+
+### ❌ Still failing
+
+```bat
+"C:\Program Files\Docker\Docker\resources\bin\docker.exe" build -t app .
+```
+
+---
+
+## 🎯 Result
+
+Successfully integrated Jenkins with Docker and executed container.
