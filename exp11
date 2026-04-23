@@ -1,0 +1,235 @@
+**EXPERIMENT 11: Writing Unit Tests using JUnit (Full Setup – Windows)**
+
+---
+
+## 🎯 **Objective**
+
+To write a Java program and perform unit testing using JUnit with a complete Maven setup.
+
+---
+
+## 🧭 **Startup Guide (Windows System)**
+
+### **Step 0: Open Terminal**
+
+```bat
+cd C:\Users\danis\OneDrive\Desktop
+```
+
+---
+
+## ⚙️ **Execution Steps**
+
+---
+
+### **Step 1: Create Maven Project**
+
+```bat
+mvn archetype:generate -DgroupId=com.example -DartifactId=junit-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+```
+
+---
+
+### **Step 2: Move into Project**
+
+```bat
+cd junit-demo
+```
+
+---
+
+### **Step 3: Replace pom.xml (FULL FILE)**
+
+👉 Open:
+
+```bat
+notepad pom.xml
+```
+
+👉 Replace completely with:
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>junit-demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <!-- JUnit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Surefire Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+```
+
+---
+
+### **Step 4: Create Main Java Class**
+
+👉 Go to:
+
+```bat
+src\main\java\com\example
+```
+
+👉 Open:
+
+```bat
+notepad App.java
+```
+
+👉 Replace with:
+
+```java
+package com.example;
+
+public class App {
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int divide(int a, int b) {
+        if (b == 0) {
+            throw new ArithmeticException("Cannot divide by zero");
+        }
+        return a / b;
+    }
+}
+```
+
+---
+
+### **Step 5: Create Test Class**
+
+👉 Go to:
+
+```bat
+src\test\java\com\example
+```
+
+👉 Open:
+
+```bat
+notepad AppTest.java
+```
+
+👉 Replace with:
+
+```java
+package com.example;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+public class AppTest {
+
+    App app = new App();
+
+    @Test
+    void testAdd() {
+        assertEquals(5, app.add(2, 3));
+    }
+
+    @Test
+    void testDivide() {
+        assertEquals(2, app.divide(4, 2));
+    }
+
+    @Test
+    void testDivideByZero() {
+        assertThrows(ArithmeticException.class, () -> {
+            app.divide(4, 0);
+        });
+    }
+}
+```
+
+---
+
+### **Step 6: Run Tests**
+
+```bat
+mvn test
+```
+
+---
+
+## ✅ **Expected Output**
+
+```text
+Tests run: 3, Failures: 0, Errors: 0
+BUILD SUCCESS
+```
+
+---
+
+## 📁 **Project Structure**
+
+```text
+junit-demo/
+ ├── pom.xml
+ ├── src/
+     ├── main/java/com/example/App.java
+     ├── test/java/com/example/AppTest.java
+```
+
+---
+
+## 📌 **Important Commands**
+
+```bat
+mvn test
+```
+
+---
+
+## ⚠️ **Common Errors & Fix**
+
+### ❌ Tests not running
+
+* Ensure JUnit dependency present
+* Use correct package structure
+
+---
+
+### ❌ Compilation error
+
+* Check class names and package names
+
+---
+
+## 🧠 **Key Points (Exam)**
+
+* JUnit used for unit testing
+* `@Test` annotation defines test case
+* `assertEquals()` verifies output
+* `assertThrows()` checks exceptions
+
+---
+
+## 🎯 **Result**
+
+Successfully created a Java program and executed unit tests using JUnit with Maven.
