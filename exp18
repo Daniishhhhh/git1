@@ -1,0 +1,161 @@
+**EXPERIMENT 18: Push Docker Image to Docker Hub (Windows)**
+
+---
+
+## 🎯 **Objective**
+
+To build a Docker image locally and push it to Docker Hub for sharing and distribution.
+
+---
+
+## 🧭 **Startup Guide (Windows System)**
+
+### **Step 0: Start Docker**
+
+* Open **Docker Desktop**
+* Ensure Docker is running
+
+---
+
+### **Step 1: Open Command Prompt**
+
+```bat
+cd C:\Users\danis\OneDrive\Desktop\docker-demo
+```
+
+👉 Ensure this folder contains:
+
+* `App.java`
+* `Dockerfile`
+
+---
+
+## ⚙️ **Execution Steps**
+
+---
+
+### **Step 2: Build Docker Image**
+
+```bat
+docker build -t java-app .
+```
+
+---
+
+### **Step 3: Verify Image**
+
+```bat
+docker images
+```
+
+---
+
+### **Step 4: Login to Docker Hub**
+
+```bat
+docker login
+```
+
+👉 Enter:
+
+* Docker Hub username
+* Password
+
+---
+
+### **Step 5: Tag Image for Docker Hub**
+
+```bat
+docker tag java-app daniishhhhh/java-app:latest
+```
+
+👉 Format:
+
+```
+<dockerhub-username>/<image-name>:tag
+```
+
+---
+
+### **Step 6: Push Image to Docker Hub**
+
+```bat
+docker push daniishhhhh/java-app:latest
+```
+
+---
+
+### **Step 7: Verify on Docker Hub**
+
+* Go to: https://hub.docker.com
+* Check your repository → `java-app`
+
+---
+
+## 🔄 **Optional: Pull Image from Docker Hub**
+
+```bat
+docker pull daniishhhhh/java-app:latest
+```
+
+---
+
+## ▶️ **Run Pulled Image**
+
+```bat
+docker run daniishhhhh/java-app
+```
+
+---
+
+## 📌 **Important Commands Summary**
+
+```bat
+docker build -t java-app .
+docker login
+docker tag java-app username/java-app:latest
+docker push username/java-app:latest
+docker pull username/java-app:latest
+docker run username/java-app
+```
+
+---
+
+## ⚠️ **Common Errors & Fix**
+
+### ❌ Access denied
+
+* Check Docker Hub username
+* Ensure login successful
+
+---
+
+### ❌ Repository not found
+
+* Use correct naming format
+* Create repo on Docker Hub if needed
+
+---
+
+### ❌ Push denied
+
+* Ensure correct tag:
+
+```bat
+docker tag java-app username/java-app:latest
+```
+
+---
+
+## 🧠 **Key Points (Exam)**
+
+* Docker Hub = cloud registry
+* `docker tag` links local image to repo
+* `docker push` uploads image
+* Images can be shared and reused
+
+---
+
+## 🎯 **Result**
+
+Successfully pushed a Docker image to Docker Hub and verified it online.
