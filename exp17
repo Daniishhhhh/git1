@@ -1,0 +1,189 @@
+**EXPERIMENT 17: Docker Volumes and Port Mapping (Windows)**
+
+---
+
+## 🎯 **Objective**
+
+To understand Docker volumes for data persistence and port mapping for accessing containers.
+
+---
+
+## 🧭 **Startup Guide (Windows System)**
+
+### **Step 0: Start Docker**
+
+* Open **Docker Desktop**
+* Ensure Docker is running
+
+---
+
+### **Step 1: Open Command Prompt**
+
+```bat id="a1k9p3"
+cd C:\Users\danis\OneDrive\Desktop
+```
+
+---
+
+## ⚙️ **Execution Steps**
+
+---
+
+# 🔹 **PART A: Port Mapping**
+
+---
+
+### **Step 2: Run Nginx Container with Port Mapping**
+
+```bat id="n4v7x2"
+docker run -d -p 8080:80 nginx
+```
+
+👉 Explanation:
+
+* `-d` → detached mode
+* `-p 8080:80` → map:
+
+  * Host port **8080**
+  * Container port **80**
+
+---
+
+### **Step 3: Verify Running Container**
+
+```bat id="r8c2m6"
+docker ps
+```
+
+---
+
+### **Step 4: Access in Browser**
+
+```text id="k5w1z9"
+http://localhost:8080
+```
+
+👉 Nginx default page will be displayed
+
+---
+
+# 🔹 **PART B: Docker Volumes (Data Persistence)**
+
+---
+
+### **Step 5: Create Docker Volume**
+
+```bat id="p3t8y4"
+docker volume create myvolume
+```
+
+---
+
+### **Step 6: List Volumes**
+
+```bat id="m7x2c1"
+docker volume ls
+```
+
+---
+
+### **Step 7: Run Container with Volume**
+
+```bat id="z9v4q8"
+docker run -d -v myvolume:/usr/share/nginx/html -p 8081:80 nginx
+```
+
+👉 Explanation:
+
+* `-v myvolume:/path` → mount volume
+* Data persists even after container stops
+
+---
+
+### **Step 8: Verify Container**
+
+```bat id="x2k6r1"
+docker ps
+```
+
+---
+
+### **Step 9: Stop Container**
+
+```bat id="c8p1t5"
+docker stop <container_id>
+```
+
+---
+
+### **Step 10: Remove Container**
+
+```bat id="y7v3m9"
+docker rm <container_id>
+```
+
+---
+
+### **Step 11: Check Volume Still Exists**
+
+```bat id="f4x8n2"
+docker volume ls
+```
+
+👉 Volume remains (data persists)
+
+---
+
+### **Step 12: Remove Volume**
+
+```bat id="q6z1k3"
+docker volume rm myvolume
+```
+
+---
+
+## 📌 **Important Commands Summary**
+
+```bat id="w2p9x4"
+docker run -d -p 8080:80 nginx
+docker volume create myvolume
+docker volume ls
+docker run -d -v myvolume:/path -p 8081:80 nginx
+docker stop <container_id>
+docker rm <container_id>
+docker volume rm myvolume
+```
+
+---
+
+## ⚠️ **Common Errors & Fix**
+
+### ❌ Port already in use
+
+* Change port:
+
+```bat id="d3k7v1"
+docker run -d -p 9090:80 nginx
+```
+
+---
+
+### ❌ Volume not working
+
+* Ensure correct mount path
+
+---
+
+## 🧠 **Key Points (Exam)**
+
+* Port mapping connects container to host
+* Volumes provide persistent storage
+* Containers are temporary, volumes are permanent
+* `-p` → port mapping
+* `-v` → volume mounting
+
+---
+
+## 🎯 **Result**
+
+Successfully implemented Docker port mapping and data persistence using volumes.
