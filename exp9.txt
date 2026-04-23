@@ -1,62 +1,72 @@
-**EXPERIMENT 9: Jenkins Declarative Pipeline**
-
-**Objective:**
-To create and execute a Jenkins Declarative Pipeline using a Jenkinsfile.
+**EXPERIMENT 9: Jenkins Declarative Pipeline (Git + Maven) – Windows**
 
 ---
 
-### **Execution Steps**
+## 🎯 **Objective**
 
-### **Part A: Create Pipeline Job**
-
-**Step 1: Open Jenkins Dashboard**
-
-* Go to `http://localhost:8080`
+To create and execute a Jenkins Declarative Pipeline using a `Jenkinsfile` for building a Maven project.
 
 ---
 
-**Step 2: Create New Item**
+## 🧭 **Startup Guide (Windows System)**
 
-* Click **New Item**
-* Enter name → `pipeline-job`
-* Select **Pipeline**
-* Click **OK**
+### **Step 0: Prerequisites**
 
----
-
-### **Part B: Configure Pipeline**
-
-**Step 3: Scroll to Pipeline Section**
-
-* In **Pipeline → Definition**, select:
-  **Pipeline script**
+* Jenkins running → `http://localhost:8080`
+* Git installed and configured
+* Maven installed and added to PATH
+* GitHub repo with Maven project (`pom.xml` present)
 
 ---
 
-### **Part C: Add Jenkinsfile (Minimal Code)**
+## ⚙️ **Execution Steps**
 
-**Step 4: Enter Pipeline Script**
+---
 
-```groovy id="s9iqtf"
+# 🔹 **PART A: Create Jenkinsfile in Project**
+
+### **Step 1: Go to Project Folder**
+
+```bat id="r4t3ne"
+cd C:\Users\danis\OneDrive\Desktop\maven-demo
+```
+
+---
+
+### **Step 2: Create Jenkinsfile**
+
+```bat id="l2mx3i"
+notepad Jenkinsfile
+```
+
+👉 Add the following content:
+
+```groovy id="5v9c5k"
 pipeline {
     agent any
 
     stages {
+        stage('Clone') {
+            steps {
+                echo 'Cloning repository...'
+            }
+        }
+
         stage('Build') {
             steps {
-                echo 'Building project...'
+                bat 'mvn clean compile'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running tests...'
+                bat 'mvn test'
             }
         }
 
-        stage('Deploy') {
+        stage('Package') {
             steps {
-                echo 'Deploying application...'
+                bat 'mvn package'
             }
         }
     }
@@ -65,34 +75,150 @@ pipeline {
 
 ---
 
-### **Part D: Run Pipeline**
+### **Step 3: Push Jenkinsfile to GitHub**
 
-**Step 5: Save Job**
+```bat id="axwrde"
+git add Jenkinsfile
+git commit -m "Added Jenkins pipeline"
+git push
+```
 
+---
+
+# 🔹 **PART B: Create Pipeline Job in Jenkins**
+
+### **Step 4: Create New Job**
+
+* Click **New Item**
+* Name: `pipeline-job`
+* Select **Pipeline**
+* Click **OK**
+
+---
+
+### **Step 5: Configure Pipeline**
+
+* Scroll to **Pipeline Section**
+
+👉 Definition:
+
+```id="pl7vfm"
+Pipeline script from SCM
+```
+
+👉 SCM:
+
+```id="0hg4qn"
+Git
+```
+
+👉 Repository URL:
+
+```id="n9h4j6"
+https://github.com/Daniishhhhh/maven-project.git
+```
+
+👉 Branch:
+
+```id="7pt6y7"
+*/main
+```
+
+👉 Script Path:
+
+```id="z5s9k9"
+Jenkinsfile
+```
+
+---
+
+### **Step 6: Save Job**
+
+* Click **Apply**
 * Click **Save**
 
 ---
 
-**Step 6: Build Pipeline**
+# 🔹 **PART C: Run Pipeline**
+
+### **Step 7: Build the Pipeline**
 
 * Click **Build Now**
 
 ---
 
-### **Part E: View Output**
+### **Step 8: View Pipeline Execution**
 
-**Step 7: Check Console Output**
+* Click build number
+* Click:
 
-* Click build number → **Console Output**
-
----
-
-**Step 8: View Pipeline Stages**
-
-* Open **Stage View** to see Build → Test → Deploy flow
+  * **Console Output**
+  * **Pipeline Stages View**
 
 ---
 
-### **Result**
+## ✅ **Expected Output**
 
-Successfully created and executed a Jenkins Declarative Pipeline with multiple stages.
+```id="t4z6vq"
+BUILD SUCCESS
+```
+
+👉 Stages executed:
+
+* Clone
+* Build
+* Test
+* Package
+
+---
+
+## ⚠️ **Common Errors & Fix**
+
+### ❌ mvn not recognized
+
+```bat id="g1pt7o"
+"C:\Program Files\Apache\maven\bin\mvn.cmd" clean package
+```
+
+---
+
+### ❌ Jenkinsfile not found
+
+* Ensure file name is exactly:
+
+```id="0h1w7o"
+Jenkinsfile
+```
+
+---
+
+### ❌ Wrong branch
+
+* Use:
+
+```id="6ktcfs"
+*/main
+```
+
+---
+
+## 📁 **Workspace**
+
+```id="m0a6hm"
+C:\ProgramData\Jenkins\.jenkins\workspace\pipeline-job
+```
+
+---
+
+## 🧠 **Key Points (Exam)**
+
+* Declarative pipeline uses `pipeline {}` syntax
+* Defined in `Jenkinsfile`
+* Stages automate CI process
+* Integrated with GitHub
+
+---
+
+## 🎯 **Result**
+
+Successfully created and executed a Jenkins Declarative Pipeline using a Jenkinsfile to build a Maven project.
