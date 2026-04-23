@@ -1,0 +1,223 @@
+**EXPERIMENT 12: Running JUnit Tests with Maven (Including Pass & Fail Cases) – Windows**
+
+---
+
+## 🎯 **Objective**
+
+To execute JUnit test cases using Maven and observe both passing and failing test results.
+
+---
+
+## 🧭 **Startup Guide (Windows System)**
+
+### **Step 0: Open Terminal**
+
+```bat id="x4g1bn"
+cd C:\Users\danis\OneDrive\Desktop
+```
+
+---
+
+## ⚙️ **Execution Steps**
+
+---
+
+### **Step 1: Create Maven Project**
+
+```bat id="h8h6e3"
+mvn archetype:generate -DgroupId=com.example -DartifactId=test-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+```
+
+---
+
+### **Step 2: Move into Project**
+
+```bat id="m8g2w7"
+cd test-demo
+```
+
+---
+
+### **Step 3: Replace pom.xml (FULL FILE)**
+
+```xml id="q3k2s9"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>test-demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <!-- JUnit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Surefire Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+```
+
+---
+
+### **Step 4: Create Main Class**
+
+```bat id="b7w9p2"
+notepad src\main\java\com\example\App.java
+```
+
+```java id="c8z5n1"
+package com.example;
+
+public class App {
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int multiply(int a, int b) {
+        return a * b;
+    }
+}
+```
+
+---
+
+### **Step 5: Create Test Class (3 PASS + 1 FAIL)**
+
+```bat id="a2f9k6"
+notepad src\test\java\com\example\AppTest.java
+```
+
+```java id="z1x8v3"
+package com.example;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+public class AppTest {
+
+    App app = new App();
+
+    // ✅ PASS TEST 1
+    @Test
+    void testAdd() {
+        assertEquals(5, app.add(2, 3));
+    }
+
+    // ✅ PASS TEST 2
+    @Test
+    void testMultiply() {
+        assertEquals(6, app.multiply(2, 3));
+    }
+
+    // ✅ PASS TEST 3
+    @Test
+    void testAddNegative() {
+        assertEquals(1, app.add(3, -2));
+    }
+
+    // ❌ FAIL TEST
+    @Test
+    void testFailure() {
+        assertEquals(10, app.add(2, 3)); // wrong expected value
+    }
+}
+```
+
+---
+
+### **Step 6: Run Tests**
+
+```bat id="y5v3k8"
+mvn test
+```
+
+---
+
+## ❌ **Expected Output (With Failure)**
+
+```text id="u9j4m2"
+Tests run: 4, Failures: 1, Errors: 0
+BUILD FAILURE
+```
+
+---
+
+### **Step 7: Fix the Failed Test**
+
+👉 Edit test:
+
+```java id="n6p4z7"
+assertEquals(5, app.add(2, 3));
+```
+
+---
+
+### **Step 8: Run Again**
+
+```bat id="d2w8x1"
+mvn test
+```
+
+---
+
+## ✅ **Expected Output (All Pass)**
+
+```text id="k8n2p5"
+Tests run: 4, Failures: 0
+BUILD SUCCESS
+```
+
+---
+
+## 📁 **Project Structure**
+
+```text id="v4t6q1"
+test-demo/
+ ├── pom.xml
+ ├── src/
+     ├── main/java/com/example/App.java
+     ├── test/java/com/example/AppTest.java
+```
+
+---
+
+## 📌 **Important Commands**
+
+```bat id="p1r8u6"
+mvn test
+```
+
+---
+
+## 🧠 **Key Points (Exam)**
+
+* Maven runs tests using Surefire plugin
+* Failed test → BUILD FAILURE
+* Passed tests → BUILD SUCCESS
+* Used for automated testing
+
+---
+
+## 🎯 **Result**
+
+Successfully executed JUnit tests using Maven and analyzed both passing and failing test cases.
