@@ -1,0 +1,194 @@
+**EXPERIMENT 16: Creating Docker Image using Dockerfile (Windows)**
+
+---
+
+## 🎯 **Objective**
+
+To create a Docker image using a Dockerfile and run it as a container.
+
+---
+
+## 🧭 **Startup Guide (Windows System)**
+
+### **Step 0: Start Docker**
+
+* Open **Docker Desktop**
+* Ensure Docker is running
+
+---
+
+### **Step 1: Open Command Prompt**
+
+```bat id="k1x8zp"
+cd C:\Users\danis\OneDrive\Desktop
+```
+
+---
+
+## ⚙️ **Execution Steps**
+
+---
+
+### **Step 2: Create Project Folder**
+
+```bat id="m4c9q2"
+mkdir docker-demo
+cd docker-demo
+```
+
+---
+
+### **Step 3: Create Java Program**
+
+```bat id="a7z3v1"
+notepad App.java
+```
+
+👉 Paste full code:
+
+```java id="p6r2x9"
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Hello from Docker Java App!");
+    }
+}
+```
+
+---
+
+### **Step 4: Create Dockerfile**
+
+```bat id="w2n8k5"
+notepad Dockerfile
+```
+
+👉 Paste full Dockerfile:
+
+```dockerfile id="z9q4t7"
+FROM openjdk:17
+
+WORKDIR /app
+
+COPY . /app
+
+RUN javac App.java
+
+CMD ["java", "App"]
+```
+
+---
+
+## 🧱 **Dockerfile Explanation**
+
+* `FROM` → base image (Java environment)
+* `WORKDIR` → working directory inside container
+* `COPY` → copies files into container
+* `RUN` → compile Java file
+* `CMD` → runs program
+
+---
+
+### **Step 5: Build Docker Image**
+
+```bat id="y3m7v6"
+docker build -t java-app .
+```
+
+👉 `-t` → tag (image name)
+
+---
+
+### **Step 6: Check Images**
+
+```bat id="d8p1k3"
+docker images
+```
+
+---
+
+### **Step 7: Run Container**
+
+```bat id="u5q9w2"
+docker run java-app
+```
+
+👉 Expected output:
+
+```text id="j2c6n8"
+Hello from Docker Java App!
+```
+
+---
+
+### **Step 8: Run in Interactive Mode (Optional)**
+
+```bat id="x7f4r1"
+docker run -it java-app
+```
+
+---
+
+### **Step 9: Remove Container**
+
+```bat id="c3b8v5"
+docker ps -a
+docker rm <container_id>
+```
+
+---
+
+### **Step 10: Remove Image**
+
+```bat id="h9n2k7"
+docker rmi java-app
+```
+
+---
+
+## 📁 **Project Structure**
+
+```text id="t1m5z8"
+docker-demo/
+ ├── App.java
+ ├── Dockerfile
+```
+
+---
+
+## 📌 **Important Commands**
+
+```bat id="v4x7p2"
+docker build -t java-app .
+docker run java-app
+docker images
+```
+
+---
+
+## ⚠️ **Common Errors & Fix**
+
+### ❌ docker build fails
+
+* Ensure Docker is running
+* Check Dockerfile name (no extension)
+
+---
+
+### ❌ javac not found
+
+* Use correct base image (`openjdk`)
+
+---
+
+## 🧠 **Key Points (Exam)**
+
+* Dockerfile defines image creation steps
+* Image is built using `docker build`
+* Container runs using `docker run`
+* Reproducible environment
+
+---
+
+## 🎯 **Result**
+
+Successfully created a Docker image using a Dockerfile and executed it as a container.
