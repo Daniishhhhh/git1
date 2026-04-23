@@ -1,93 +1,200 @@
-**EXPERIMENT 8: Build Triggers in Jenkins**
-
-**Objective:**
-To configure automatic build triggers in Jenkins (poll SCM / webhook).
+**EXPERIMENT 8: Jenkins Build Triggers (Polling & GitHub Webhook) – Windows**
 
 ---
 
-### **Execution Steps**
+## 🎯 **Objective**
 
-### **Part A: Open Existing Job**
-
-**Step 1: Open Jenkins Dashboard**
-
-* Go to `http://localhost:8080`
-* Select your job → `demo-job`
+To automatically trigger Jenkins builds when changes are made in a GitHub repository.
 
 ---
 
-**Step 2: Configure Job**
+## 🧭 **Startup Guide (Windows System)**
 
+### **Step 0: Ensure Prerequisites**
+
+* Jenkins is running → http://localhost:8080
+* Freestyle job (Exp 7) already working
+* GitHub repo connected
+
+---
+
+## ⚙️ **Execution Steps**
+
+---
+
+# 🔹 **PART A: Poll SCM (Easy Method – Exam Friendly)**
+
+### **Step 1: Open Jenkins Job**
+
+* Go to **Jenkins Dashboard**
+* Click your job → `demo-job`
 * Click **Configure**
 
 ---
 
-### **Part B: Configure Poll SCM (Auto Build)**
-
-**Step 3: Enable Poll SCM**
+### **Step 2: Enable Poll SCM**
 
 * Scroll to **Build Triggers**
-* Select **Poll SCM**
+* Tick:
+
+```
+Poll SCM
+```
 
 ---
 
-**Step 4: Add Schedule**
+### **Step 3: Add Schedule**
 
 ```bash
 H/2 * * * *
 ```
 
-* Checks GitHub repo every 2 minutes for changes
+👉 Meaning:
+
+* Checks GitHub every **2 minutes**
 
 ---
 
-### **Part C: Connect GitHub Repository**
+### **Step 4: Save**
 
-**Step 5: Add Source Code Management**
-
-* Select **Git**
-* Enter repository URL:
-
-```
-https://github.com/your-username/git-demo.git
-```
-
----
-
-### **Part D: Webhook Trigger (Alternative)**
-
-**Step 6: Enable GitHub Hook Trigger**
-
-* Select **GitHub hook trigger for GITScm polling**
-
----
-
-**Step 7: Configure Webhook in GitHub**
-
-* Go to GitHub repo → **Settings → Webhooks**
-* Add webhook URL:
-
-```
-http://<your-ip>:8080/github-webhook/
-```
-
----
-
-### **Part E: Save and Test**
-
-**Step 8: Save Configuration**
-
+* Click **Apply**
 * Click **Save**
 
 ---
 
-**Step 9: Test Trigger**
+### **Step 5: Test Trigger**
 
-* Make a change in GitHub and push
-* Jenkins automatically starts build
+* Make a change in your GitHub repo:
+
+```bash
+echo "change" >> test.txt
+git add .
+git commit -m "trigger build"
+git push
+```
 
 ---
 
-### **Result**
+### **Step 6: Observe Jenkins**
 
-Successfully configured automatic build triggers using Poll SCM and GitHub Webhooks.
+* Wait 1–2 minutes
+* Build will trigger automatically
+
+---
+
+# 🔹 **PART B: GitHub Webhook (Real-Time Trigger)**
+
+---
+
+### **Step 1: Enable Webhook in Jenkins**
+
+* Go to Job → **Configure**
+* Under **Build Triggers**, tick:
+
+```
+GitHub hook trigger for GITScm polling
+```
+
+---
+
+### **Step 2: Configure GitHub Webhook**
+
+👉 Go to your GitHub repo:
+
+* Click **Settings**
+* Click **Webhooks**
+* Click **Add webhook**
+
+---
+
+### **Step 3: Add Webhook URL**
+
+```id="f2ib44"
+http://<your-ip>:8080/github-webhook/
+```
+
+👉 For local system:
+
+```id="nt0p8z"
+http://localhost:8080/github-webhook/
+```
+
+⚠️ Note:
+
+* For real working → use **ngrok/public IP**
+* For exam → localhost is enough
+
+---
+
+### **Step 4: Select Events**
+
+* Choose:
+
+```
+Just the push event
+```
+
+---
+
+### **Step 5: Save Webhook**
+
+---
+
+### **Step 6: Test Webhook**
+
+Make a change:
+
+```bash
+echo "webhook test" >> test2.txt
+git add .
+git commit -m "webhook trigger"
+git push
+```
+
+---
+
+### **Step 7: Observe Jenkins**
+
+* Build starts **immediately (no delay)**
+
+---
+
+## 📌 **Important Commands Used**
+
+```bash
+git add .
+git commit -m "message"
+git push
+```
+
+---
+
+## ⚠️ **Common Errors & Fix**
+
+### ❌ Poll SCM not triggering
+
+* Check cron syntax
+* Wait at least 1–2 minutes
+
+---
+
+### ❌ Webhook not working
+
+* Use correct URL
+* Ensure Jenkins is running
+* Check GitHub webhook delivery logs
+
+---
+
+## 🧠 **Key Points (Exam)**
+
+* Poll SCM = periodic check
+* Webhook = real-time trigger
+* Cron format used in Poll SCM
+* Webhook requires GitHub configuration
+
+---
+
+## 🎯 **Result**
+
+Successfully configured Jenkins to automatically trigger builds using Poll SCM and GitHub Webhooks.
