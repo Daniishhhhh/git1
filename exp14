@@ -1,0 +1,259 @@
+**EXPERIMENT 14: Test Coverage using JaCoCo (Windows – Full Setup)**
+
+---
+
+## 🎯 **Objective**
+
+To measure code coverage of a Java application using JaCoCo integrated with Maven.
+
+---
+
+## 🧭 **Startup Guide (Windows System)**
+
+### **Step 0: Open Terminal**
+
+```bat
+cd C:\Users\danis\OneDrive\Desktop
+```
+
+---
+
+## ⚙️ **Execution Steps**
+
+---
+
+### **Step 1: Create Maven Project**
+
+```bat
+mvn archetype:generate -DgroupId=com.example -DartifactId=jacoco-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+```
+
+---
+
+### **Step 2: Move into Project**
+
+```bat
+cd jacoco-demo
+```
+
+---
+
+### **Step 3: Replace pom.xml (FULL FILE)**
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>jacoco-demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <!-- JUnit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- Surefire Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+
+            <!-- JaCoCo Plugin -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.11</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
+```
+
+---
+
+### **Step 4: Create Java Class**
+
+```bat
+notepad src\main\java\com\example\App.java
+```
+
+```java
+package com.example;
+
+public class App {
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int divide(int a, int b) {
+        if (b == 0) {
+            throw new ArithmeticException("Divide by zero");
+        }
+        return a / b;
+    }
+}
+```
+
+---
+
+### **Step 5: Create Test Class (Partial Coverage)**
+
+```bat
+notepad src\test\java\com\example\AppTest.java
+```
+
+```java
+package com.example;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+public class AppTest {
+
+    App app = new App();
+
+    @Test
+    void testAdd() {
+        assertEquals(5, app.add(2, 3));
+    }
+
+    @Test
+    void testDivide() {
+        assertEquals(2, app.divide(4, 2));
+    }
+
+    // NOTE: No test for divide by zero → partial coverage
+}
+```
+
+---
+
+### **Step 6: Run Tests with Coverage**
+
+```bat
+mvn clean test
+```
+
+---
+
+### **Step 7: Open Coverage Report**
+
+👉 Navigate to:
+
+```id="f6k2n8"
+target\site\jacoco\index.html
+```
+
+👉 Open in browser:
+
+```bat
+start target\site\jacoco\index.html
+```
+
+---
+
+## ❌ **Expected Output (Partial Coverage)**
+
+* add() → fully covered
+* divide() → partially covered
+* Exception case NOT covered
+
+👉 Coverage example:
+
+```id="h9w2q7"
+Line Coverage: ~80%
+Branch Coverage: ~50%
+```
+
+---
+
+### **Step 8: Improve Coverage**
+
+👉 Add test:
+
+```java
+@Test
+void testDivideByZero() {
+    assertThrows(ArithmeticException.class, () -> {
+        app.divide(4, 0);
+    });
+}
+```
+
+---
+
+### **Step 9: Run Again**
+
+```bat
+mvn clean test
+```
+
+---
+
+## ✅ **Expected Output (Improved Coverage)**
+
+* All branches covered
+* Coverage increases significantly
+
+---
+
+## 📁 **Report Location**
+
+```id="z4n1x6"
+target\site\jacoco\
+```
+
+---
+
+## 📌 **Important Commands**
+
+```bat
+mvn clean test
+start target\site\jacoco\index.html
+```
+
+---
+
+## 🧠 **Key Points (Exam)**
+
+* JaCoCo measures code coverage
+* Metrics: Line, Branch, Method
+* Integrated via Maven plugin
+* Coverage improves with more test cases
+
+---
+
+## 🎯 **Result**
+
+Successfully generated and analyzed code coverage using JaCoCo in a Maven project.
