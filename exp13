@@ -1,0 +1,270 @@
+**EXPERIMENT 13: Integrating JUnit Tests with Jenkins (Windows)**
+
+---
+
+## 🎯 **Objective**
+
+To integrate JUnit test execution with Jenkins and generate test reports.
+
+---
+
+## 🧭 **Startup Guide (Windows System)**
+
+### **Step 0: Start Jenkins**
+
+```bat id="l3k2q1"
+cd C:\Program Files\Jenkins
+java -jar jenkins.war
+```
+
+👉 Open browser:
+
+```id="z7x4c9"
+http://localhost:8080
+```
+
+👉 Login
+
+---
+
+## ⚙️ **Execution Steps**
+
+---
+
+### **Step 1: Create Maven Project (JUnit Setup)**
+
+```bat id="m1a8w2"
+cd C:\Users\danis\OneDrive\Desktop
+mvn archetype:generate -DgroupId=com.example -DartifactId=jenkins-junit -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+cd jenkins-junit
+```
+
+---
+
+### **Step 2: Replace pom.xml (FULL FILE)**
+
+```xml id="p8z3k6"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>jenkins-junit</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <!-- JUnit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Surefire Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+```
+
+---
+
+### **Step 3: Create Java Class**
+
+```bat id="t4n7v2"
+notepad src\main\java\com\example\App.java
+```
+
+```java id="q9m1x5"
+package com.example;
+
+public class App {
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+}
+```
+
+---
+
+### **Step 4: Create Test Class (Include Fail Case)**
+
+```bat id="b6r2k9"
+notepad src\test\java\com\example\AppTest.java
+```
+
+```java id="z3c7y1"
+package com.example;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+public class AppTest {
+
+    App app = new App();
+
+    @Test
+    void testAddPass() {
+        assertEquals(5, app.add(2, 3));
+    }
+
+    @Test
+    void testAddFail() {
+        assertEquals(10, app.add(2, 3)); // intentional fail
+    }
+}
+```
+
+---
+
+### **Step 5: Push Project to GitHub**
+
+```bat id="x2w8k4"
+git init
+git add .
+git commit -m "JUnit Jenkins integration"
+git branch -M main
+git remote add origin https://github.com/Daniishhhhh/jenkins-junit.git
+git push -u origin main
+```
+
+---
+
+### **Step 6: Create Jenkins Freestyle Job**
+
+* Go to Jenkins → **New Item**
+* Name: `junit-job`
+* Select **Freestyle Project**
+* Click **OK**
+
+---
+
+### **Step 7: Configure Git**
+
+* Source Code Management → **Git**
+
+```id="k7m2q8"
+https://github.com/Daniishhhhh/jenkins-junit.git
+```
+
+👉 Branch:
+
+```id="n2v6x1"
+*/main
+```
+
+---
+
+### **Step 8: Add Build Step**
+
+👉 Build → Execute Windows batch command
+
+```bat id="y5q8t2"
+mvn test
+```
+
+---
+
+### **Step 9: Add Post-Build Action (IMPORTANT)**
+
+👉 Post-build Actions → **Publish JUnit test result report**
+
+```id="u8k1z6"
+target/surefire-reports/*.xml
+```
+
+---
+
+### **Step 10: Save and Build**
+
+* Click **Build Now**
+
+---
+
+## ❌ **Expected Output (With Fail Test)**
+
+* Build Status: **FAILURE**
+* Test Report shows:
+
+```id="f9w3a7"
+1 Passed, 1 Failed
+```
+
+---
+
+### **Step 11: Fix Failed Test**
+
+```java id="p6n4c2"
+assertEquals(5, app.add(2, 3));
+```
+
+---
+
+### **Step 12: Push Fix**
+
+```bat id="r1m9x3"
+git add .
+git commit -m "Fixed test"
+git push
+```
+
+---
+
+### **Step 13: Build Again**
+
+* Click **Build Now**
+
+---
+
+## ✅ **Expected Output (After Fix)**
+
+* Build Status: **SUCCESS**
+* Test Report:
+
+```id="v7t2k9"
+2 Passed, 0 Failed
+```
+
+---
+
+## 📁 **Report Location**
+
+```id="e3k6p8"
+target/surefire-reports/
+```
+
+---
+
+## 📌 **Important Commands**
+
+```bat id="d8n2w4"
+mvn test
+```
+
+---
+
+## 🧠 **Key Points (Exam)**
+
+* Jenkins runs JUnit tests using Maven
+* Test reports generated in XML
+* Jenkins visualizes test results
+* Failures break the build
+
+---
+
+## 🎯 **Result**
+
+Successfully integrated JUnit testing with Jenkins and generated test reports.
