@@ -1,88 +1,137 @@
 **EXPERIMENT 6: Maven Project Setup and Build**
 
 **Objective:**
-To create a Maven project, configure dependencies, and build the project.
+To create a Maven-based Java project, compile code, and generate a build artifact (JAR).
 
 ---
 
-### **Execution Steps**
+## 🧭 **Startup Guide (First Time on New System)**
 
-### **Part A: Create Maven Project**
+**Where to work:**
 
-**Step 1: Create Maven Project**
+* Open terminal
+* Go to a working directory (example Desktop)
 
 ```bash
-mvn archetype:generate -DgroupId=com.example -DartifactId=demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+cd Desktop
 ```
 
 ---
 
-**Step 2: Navigate to Project Folder**
+## ⚙️ **Execution Steps**
+
+### **Step 1: Create Maven Project (Using Archetype)**
 
 ```bash
-cd demo
+mvn archetype:generate -DgroupId=com.example -DartifactId=maven-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+```
+
+* Creates a complete Maven project structure
+
+---
+
+### **Step 2: Move into Project Directory**
+
+```bash
+cd maven-demo
 ```
 
 ---
 
-### **Part B: Understand Project Structure**
+### **Step 3: Project Structure Check**
 
-* `src/main/java` → Application code
-* `src/test/java` → Test code
-* `pom.xml` → Project configuration
+```bash
+ls
+```
+
+Expected folders:
+
+* `src/main/java` → main code
+* `src/test/java` → test code
+* `pom.xml` → project configuration
 
 ---
 
-### **Part C: Build the Project**
+### **Step 4: Open Project (Optional)**
 
-**Step 3: Compile the Project**
+* Open this folder in VS Code / IntelliJ
+
+---
+
+### **Step 5: Compile the Project**
 
 ```bash
 mvn compile
 ```
 
+* Compiles Java source code
+* `.class` files generated in `target/`
+
 ---
 
-**Step 4: Run Tests**
+### **Step 6: Run Default Test**
 
 ```bash
 mvn test
 ```
 
+* Executes test cases in `src/test/java`
+
 ---
 
-**Step 5: Package the Project**
+### **Step 7: Package the Project (Create JAR)**
 
 ```bash
 mvn package
 ```
 
-* Generates `.jar` file in `target/`
+* Generates `.jar` file in:
 
----
-
-### **Part D: Run the Application (Minimal Code)**
-
-**Step 6: Edit Main Class**
-
-```java
-public class App {
-    public static void main(String[] args) {
-        System.out.println("Hello Maven");
-    }
-}
+```
+maven-demo/target/
 ```
 
 ---
 
-**Step 7: Run JAR File**
+### **Step 8: Run the JAR File**
 
 ```bash
-java -cp target/demo-1.0-SNAPSHOT.jar com.example.App
+java -cp target/maven-demo-1.0-SNAPSHOT.jar com.example.App
 ```
 
 ---
 
-### **Result**
+## 🧾 **Minimal Code (Auto Generated)**
 
-Successfully created a Maven project, compiled, tested, and packaged the application.
+### **Main Class**
+
+Location:
+
+```
+src/main/java/com/example/App.java
+```
+
+(Default code is already present — no need to modify)
+
+---
+
+### **pom.xml (Important File)**
+
+* Contains dependencies and build configuration
+* Automatically created by Maven
+
+---
+
+## 📌 **Key Commands Summary**
+
+```bash
+mvn compile
+mvn test
+mvn package
+```
+
+---
+
+## 🎯 **Result**
+
+Successfully created a Maven project, compiled the code, executed tests, and generated a JAR file.
